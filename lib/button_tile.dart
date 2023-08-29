@@ -18,18 +18,16 @@ class ButtonTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: TextButton(
-        onPressed: () {
-          onPressed(index);
-          calculatorController.calculator(number: index);
-        },
-        child: Text(
-          nameButton,
-          style: const TextStyle(
-            fontSize: 32,
-            color: Colors.white,
-          ),
+    return TextButton(
+      onPressed: () {
+        onPressed(index);
+        calculatorController.calculator(number: index);
+      },
+      child: Text(
+        nameButton,
+        style: const TextStyle(
+          fontSize: 32,
+          color: Colors.white,
         ),
       ),
     );

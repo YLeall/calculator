@@ -29,7 +29,7 @@ class CalculatorScreen extends StatelessWidget {
     '=',
   ];
 
-  Color corBase = const Color(0xFF292445);
+  final Color corBase = const Color(0xFF292445);
   //Color corBase2 = const Color(0xFF121212);
   final calculatorController = Get.find<CalculatorController>();
 
