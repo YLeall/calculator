@@ -88,7 +88,7 @@ class CalculatorController extends GetxController {
         lastNumberScreen.value = '${lastNumberScreen.value} =';
         for (String teste in ola) {
           //print(teste);
-          final convertido = int.parse(teste);
+          final int convertido = int.parse(teste);
           print(convertido);
         }
         print(oola);
@@ -120,9 +120,7 @@ class CalculatorController extends GetxController {
       if (ui!='') {
         print(ui);
       }
-      // if (ui == '+' || ui == '-' || ui == 'x' || ui == '/') {
-      //   print(ui);
-      // }
+      
     }
 
     //
