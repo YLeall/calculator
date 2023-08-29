@@ -23,7 +23,7 @@ class CalculatorController extends GetxController {
         numbersCut.clear();
         //lastNumberScreen.value = resultCalculator.toString();
         lastNumberScreen.value = '0';
-        controleDeLimpar=1;
+        controleDeLimpar = 1;
         break;
       case 1:
         listNumbersScreen.add('()');
@@ -40,7 +40,6 @@ class CalculatorController extends GetxController {
 
         if (resultCalculator != 0 && controleDeLimpar == 0) {
           listNumbersScreen.clear();
-          //ola.clear();
           listNumbersScreen.add(resultCalculator);
           listNumbersScreen.add('+');
           numbersCut.clear();
@@ -53,7 +52,6 @@ class CalculatorController extends GetxController {
         lastNumberScreen.value = '0';
         if (resultCalculator != 0 && controleDeLimpar == 0) {
           listNumbersScreen.clear();
-          //ola.clear();
           listNumbersScreen.add(resultCalculator);
           listNumbersScreen.add('1');
           numbersCut.clear();
@@ -65,7 +63,6 @@ class CalculatorController extends GetxController {
         lastNumberScreen.value = '0';
         if (resultCalculator != 0 && controleDeLimpar == 0) {
           listNumbersScreen.clear();
-          //ola.clear();
           listNumbersScreen.add(resultCalculator);
           listNumbersScreen.add('2');
           numbersCut.clear();
@@ -77,7 +74,6 @@ class CalculatorController extends GetxController {
         lastNumberScreen.value = '0';
         if (resultCalculator != 0 && controleDeLimpar == 0) {
           listNumbersScreen.clear();
-          //ola.clear();
           listNumbersScreen.add(resultCalculator);
           listNumbersScreen.add('3');
           numbersCut.clear();
@@ -99,7 +95,6 @@ class CalculatorController extends GetxController {
         lastNumberScreen.value = '0';
         if (resultCalculator != 0 && controleDeLimpar == 0) {
           listNumbersScreen.clear();
-          //ola.clear();
           listNumbersScreen.add(resultCalculator);
           listNumbersScreen.add('4');
           numbersCut.clear();
@@ -111,7 +106,6 @@ class CalculatorController extends GetxController {
         lastNumberScreen.value = '0';
         if (resultCalculator != 0 && controleDeLimpar == 0) {
           listNumbersScreen.clear();
-          //ola.clear();
           listNumbersScreen.add(resultCalculator);
           listNumbersScreen.add('5');
           numbersCut.clear();
@@ -123,7 +117,6 @@ class CalculatorController extends GetxController {
         lastNumberScreen.value = '0';
         if (resultCalculator != 0 && controleDeLimpar == 0) {
           listNumbersScreen.clear();
-          //ola.clear();
           listNumbersScreen.add(resultCalculator);
           listNumbersScreen.add('6');
           numbersCut.clear();
@@ -145,7 +138,6 @@ class CalculatorController extends GetxController {
         lastNumberScreen.value = '0';
         if (resultCalculator != 0 && controleDeLimpar == 0) {
           listNumbersScreen.clear();
-          //ola.clear();
           listNumbersScreen.add(resultCalculator);
           listNumbersScreen.add('7');
           numbersCut.clear();
@@ -157,7 +149,6 @@ class CalculatorController extends GetxController {
         lastNumberScreen.value = '0';
         if (resultCalculator != 0 && controleDeLimpar == 0) {
           listNumbersScreen.clear();
-          //ola.clear();
           listNumbersScreen.add(resultCalculator);
           listNumbersScreen.add('8');
           numbersCut.clear();
@@ -169,7 +160,6 @@ class CalculatorController extends GetxController {
         lastNumberScreen.value = '0';
         if (resultCalculator != 0 && controleDeLimpar == 0) {
           listNumbersScreen.clear();
-          //ola.clear();
           listNumbersScreen.add(resultCalculator);
           listNumbersScreen.add('9');
           numbersCut.clear();
@@ -190,14 +180,13 @@ class CalculatorController extends GetxController {
         listNumbersScreen.isEmpty ? null : listNumbersScreen.removeLast();
         break;
       case 17:
-        if(numberScreen.value == '0'){
+        if (numberScreen.value == '0') {
           return;
         }
         listNumbersScreen.add('0');
         lastNumberScreen.value = '0';
         if (resultCalculator != 0 && controleDeLimpar == 0) {
           listNumbersScreen.clear();
-          //ola.clear();
           listNumbersScreen.add(resultCalculator);
           listNumbersScreen.add('0');
           numbersCut.clear();
@@ -205,22 +194,33 @@ class CalculatorController extends GetxController {
         }
         break;
       case 18:
+        if (numberScreen.value == '0') {
+          listNumbersScreen.add('0');
+        } else if (listNumbersScreen.last == '.') {
+          return;
+        }
         listNumbersScreen.add('.');
         break;
       case 19:
-        if(numberScreen.value == '0'){
-          print('retornei');
+        if (numberScreen.value == '0') {
           return;
         }
 
         controleDeLimpar = 0;
-        print(listNumbersScreen);
+        //print(listNumbersScreen);
         print(ola);
 
         lastNumberScreen.value = numberScreen.value;
         lastNumberScreen.value = '${lastNumberScreen.value} =';
         for (String teste in ola) {
-          final int convertido = teste != "" ? int.parse(teste):0;
+          //print(teste);
+
+          // if (teste != '') {
+          //   final int convertido = teste != "" ? int.parse(teste) : 0;
+          //   //print(convertido);
+          //   numbersCut.add(convertido);
+          // }
+          final int convertido = teste != "" ? int.parse(teste) : 0;
           //print(convertido);
           numbersCut.add(convertido);
         }
@@ -259,7 +259,7 @@ class CalculatorController extends GetxController {
           if (eita == '/') {
             resultCalculator = numbersCut[0] * numbersCut[1];
             numbersCut.removeRange(0, 2);
-            numbersCut.insert(0, resultCalculator); 
+            numbersCut.insert(0, resultCalculator);
           }
 
           operadores.isEmpty ? null : operadores.removeAt(0);
