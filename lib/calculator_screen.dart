@@ -43,11 +43,13 @@ class CalculatorScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
-              const Text(
-                '0',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 24,
+              Obx(
+                () => Text(
+                  calculatorController.lastNumberScreen.value.toString(),
+                  style: TextStyle(
+                    color: Colors.white.withAlpha(100),
+                    fontSize: 24,
+                  ),
                 ),
               ),
 
@@ -58,6 +60,7 @@ class CalculatorScreen extends StatelessWidget {
                     style: const TextStyle(
                       color: Colors.white,
                       fontSize: 64,
+                      
                     ),
                   ),
                 ),
@@ -77,7 +80,7 @@ class CalculatorScreen extends StatelessWidget {
                       nameButton: listNameButton[index],
                       index: index,
                       onPressed: (index) {
-                        print(index);
+                        //print(index);
                       },
                     );
                   },
