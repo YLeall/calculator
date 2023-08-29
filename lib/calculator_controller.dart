@@ -5,8 +5,11 @@ class CalculatorController extends GetxController {
   RxString lastNumberScreen = '0'.obs;
 
   final listNumbersScreen = [];
-  List<String> ola = [];
+  List<String> ola = []; 
   List<String> oola = [];
+  List<String> operadores = [];
+  List<int> numbersCut = [];
+  int resultCalculator = 0;
 
   void calculator({
     required int number,
@@ -89,9 +92,27 @@ class CalculatorController extends GetxController {
         for (String teste in ola) {
           //print(teste);
           final int convertido = int.parse(teste);
-          print(convertido);
+          numbersCut.add(convertido);
+          //print(convertido);
         }
-        print(oola);
+        for (String ui in oola) {
+          if (ui != '') {
+            operadores.add(ui);
+          }
+        }
+        for(int i = 0; i <= numbersCut.length; i++){
+          final eita = operadores.first;
+
+          if (eita=='+') {
+            resultCalculator = numbersCut[i] + numbersCut[i+1];
+          }
+
+          operadores.removeAt(0);
+          
+
+        }
+        
+        //print(oola);
         // for (String teste in oola) {
         //   print(teste);
         // }
@@ -103,25 +124,16 @@ class CalculatorController extends GetxController {
     numberScreen.value =
         listNumbersScreen.isEmpty ? '0' : listNumbersScreen.join("");
 
-    // for (String teste in listNumbersScreen) {
-    //   print(teste);
-    //   if (teste != '+' && teste != '-' && teste != '*' && teste != '/') {
-    //     ola.add(teste);
-    //   } else if (teste == '+') {}
-    // }
+    
 
     ola = numberScreen.split(RegExp(r'[+-/x]'));
     //print(ola);
 
     oola = numberScreen.split(RegExp(r'[0123456789]'));
     //print(oola);
+    
 
-    for (String ui in oola) {
-      if (ui!='') {
-        print(ui);
-      }
-      
-    }
+    
 
     //
   }
