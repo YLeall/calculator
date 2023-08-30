@@ -11,6 +11,10 @@ class CalculatorController extends GetxController {
   List<int> numbersCut = [];
   int resultCalculator = 0;
   int controleDeLimpar = 0;
+  int controleDeParenteses = 0;
+  List<String> listParenteses = [];
+  String junta = '';
+  int dentroParenteses=0;
 
   void calculator({
     required int number,
@@ -21,12 +25,26 @@ class CalculatorController extends GetxController {
       case 0:
         listNumbersScreen.clear();
         numbersCut.clear();
+        listParenteses.clear();
+
         //lastNumberScreen.value = resultCalculator.toString();
         lastNumberScreen.value = '0';
         controleDeLimpar = 1;
         break;
       case 1:
-        listNumbersScreen.add('()');
+        if (listNumbersScreen.isNotEmpty) {
+          if (listNumbersScreen.last == junta) {
+            listNumbersScreen.removeLast();
+            //print('removi');
+          }
+        }
+        listParenteses.insert(0, '(');
+
+        listParenteses.insert(
+            listParenteses.length == 1 ? 1 : listParenteses.length - 1, ')');
+        junta = listParenteses.join("");
+
+        listNumbersScreen.add(junta);
         lastNumberScreen.value = '0';
         break;
       case 2:
@@ -34,9 +52,36 @@ class CalculatorController extends GetxController {
         lastNumberScreen.value = '0';
         break;
       case 3:
-        listNumbersScreen[listNumbersScreen.length - 1] == '+'
-            ? null
-            : listNumbersScreen.add('+');
+        // listNumbersScreen[listNumbersScreen.length - 1] == '+'
+        //     ? null
+        //     : listNumbersScreen.add('+');
+
+        if (listNumbersScreen.isNotEmpty) {
+          if (listNumbersScreen.last == junta) {
+            final metadeListParenteses = (listParenteses.length / 2).round();
+            print(metadeListParenteses);
+            listParenteses.insert(metadeListParenteses, '+');
+            print(listParenteses);
+            print(listParenteses.length);
+            junta = listParenteses.join("");
+            listNumbersScreen.removeLast();
+            listNumbersScreen.add(junta);
+            dentroParenteses = 1;
+            //print('oi');
+          }
+          if (listNumbersScreen.last == '+') {
+            return;
+          }
+        }
+
+        if (listNumbersScreen.isEmpty) {
+          dentroParenteses = 0;
+        }
+
+        if (dentroParenteses == 0) {
+          listNumbersScreen.add('+');
+          //print('ola');
+        }
 
         if (resultCalculator != 0 && controleDeLimpar == 0) {
           listNumbersScreen.clear();
@@ -48,15 +93,44 @@ class CalculatorController extends GetxController {
 
         break;
       case 4:
-        listNumbersScreen.add('1');
+      //
+        if (listNumbersScreen.isNotEmpty) {
+          if (listNumbersScreen.last == junta) {
+            final metadeListParenteses = (listParenteses.length / 2).round();
+             print(metadeListParenteses);
+            listParenteses.insert(metadeListParenteses, '1');
+            print(listParenteses);
+            print(listParenteses.length);
+            junta = listParenteses.join("");
+            listNumbersScreen.removeLast();
+            listNumbersScreen.add(junta);
+            dentroParenteses=1;
+            //print('oi');
+          }
+        }
+
+        if(listNumbersScreen.isEmpty){
+          dentroParenteses=0;
+        }
+
+        if (dentroParenteses == 0) {
+          listNumbersScreen.add('1');
+          //print('ola');
+        }
+        
         lastNumberScreen.value = '0';
+
         if (resultCalculator != 0 && controleDeLimpar == 0) {
           listNumbersScreen.clear();
           listNumbersScreen.add(resultCalculator);
           listNumbersScreen.add('1');
           numbersCut.clear();
           controleDeLimpar = 1;
+          //print('caiu aqui');
         }
+
+        //print(listNumbersScreen);
+
         break;
       case 5:
         listNumbersScreen.add('2');
@@ -177,7 +251,39 @@ class CalculatorController extends GetxController {
         }
         break;
       case 16:
-        listNumbersScreen.isEmpty ? null : listNumbersScreen.removeLast();
+        //
+        if (listNumbersScreen.isNotEmpty) {
+          //print('1 if');
+          if (listNumbersScreen.last == junta &&
+              numberScreen.value != '()' &&
+              junta != '') {
+            final cort = junta.split('');
+            cort.removeAt(0);
+            cort.removeLast();
+            final juntaCort = cort.join('');
+            listNumbersScreen.removeLast();
+            listNumbersScreen.add(juntaCort);
+            listParenteses.clear();
+            junta = juntaCort;
+            controleDeParenteses = 1;
+            //print('2 if');
+          }
+        }
+
+        if (resultCalculator != 0 && controleDeLimpar == 0) {
+          listNumbersScreen.clear();
+          numbersCut.clear();
+          controleDeLimpar = 1;
+        }
+
+        if (listNumbersScreen.isNotEmpty && controleDeParenteses == 0 ||
+            junta == '') {
+          listNumbersScreen.isEmpty ? null : listNumbersScreen.removeLast();
+          //print('3 if');
+        }
+
+        controleDeParenteses = 0;
+        //
         break;
       case 17:
         if (numberScreen.value == '0') {
@@ -202,25 +308,28 @@ class CalculatorController extends GetxController {
         listNumbersScreen.add('.');
         break;
       case 19:
+        //
         if (numberScreen.value == '0') {
+          return;
+        } else if (listNumbersScreen.last == "+" ||
+            listNumbersScreen.last == "-" ||
+            listNumbersScreen.last == "x" ||
+            listNumbersScreen.last == "/" ||
+            listNumbersScreen.last == "%") {
           return;
         }
 
         controleDeLimpar = 0;
         //print(listNumbersScreen);
-        print(ola);
+        //print(ola);
 
         lastNumberScreen.value = numberScreen.value;
         lastNumberScreen.value = '${lastNumberScreen.value} =';
         for (String teste in ola) {
           //print(teste);
 
-          // if (teste != '') {
-          //   final int convertido = teste != "" ? int.parse(teste) : 0;
-          //   //print(convertido);
-          //   numbersCut.add(convertido);
-          // }
-          final int convertido = teste != "" ? int.parse(teste) : 0;
+          final int convertido = int.parse(teste);
+          //final int convertido = teste != "" ? int.parse(teste) : 0;
           //print(convertido);
           numbersCut.add(convertido);
         }
@@ -230,7 +339,7 @@ class CalculatorController extends GetxController {
           }
         }
 
-        print(numbersCut);
+        //print(numbersCut);
 
         for (int i = 0; i <= numbersCut.length; i++) {
           final eita = operadores.isEmpty ? null : operadores.first;
@@ -241,7 +350,7 @@ class CalculatorController extends GetxController {
             numbersCut.removeRange(0, 2);
             numbersCut.insert(0, resultCalculator);
             //print(resultCalculator);
-            print(numbersCut);
+            //print(numbersCut);
           }
 
           if (eita == '-') {
