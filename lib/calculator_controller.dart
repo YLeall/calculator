@@ -352,6 +352,7 @@ class CalculatorController extends GetxController {
         }
         listNumbersScreen.add('.');
         break;
+      //
       case 19:
         //
         if (numberScreen.value == '0') {
