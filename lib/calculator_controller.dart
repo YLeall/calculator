@@ -15,8 +15,8 @@ class CalculatorController extends GetxController {
   List<String> listParenteses = [];
   List<String> listNumbersAndOpDentroParenteses = [];
   String junta = '';
-  int dentroParenteses=0;
-  int metadeListParenteses=0;
+  int dentroParenteses = 0;
+  int metadeListParenteses = 0;
 
   void calculator({
     required int number,
@@ -29,7 +29,7 @@ class CalculatorController extends GetxController {
         numbersCut.clear();
         listParenteses.clear();
         listNumbersAndOpDentroParenteses.clear();
-        metadeListParenteses=0;
+        metadeListParenteses = 0;
 
         //lastNumberScreen.value = resultCalculator.toString();
         lastNumberScreen.value = '0';
@@ -61,19 +61,23 @@ class CalculatorController extends GetxController {
         //     : listNumbersScreen.add('+');
 
         if (listNumbersScreen.isNotEmpty) {
-          if (listNumbersScreen.last==junta) {
-
-            if (listNumbersAndOpDentroParenteses.isEmpty || listNumbersAndOpDentroParenteses.last == '+') {
+          if (listNumbersScreen.last == junta) {
+            if (listNumbersAndOpDentroParenteses.isEmpty ||
+                listNumbersAndOpDentroParenteses.last == '+') {
               return;
             }
             listNumbersAndOpDentroParenteses.add('+');
             //print(listNumbersAndOpDentroParenteses);
-            final juntaListNumbersAndOpDentroParenteses = listNumbersAndOpDentroParenteses.join("");
+            final juntaListNumbersAndOpDentroParenteses =
+                listNumbersAndOpDentroParenteses.join("");
             //print(juntaListNumbersAndOpDentroParenteses);
-             metadeListParenteses == 0 ? null : listParenteses.removeAt(metadeListParenteses);
+            metadeListParenteses == 0
+                ? null
+                : listParenteses.removeAt(metadeListParenteses);
             metadeListParenteses = (listParenteses.length / 2).round();
             //print(metadeListParenteses);
-            listParenteses.insert(metadeListParenteses, juntaListNumbersAndOpDentroParenteses);
+            listParenteses.insert(
+                metadeListParenteses, juntaListNumbersAndOpDentroParenteses);
             //print(listParenteses);
             //print(listParenteses.length);
             junta = listParenteses.join("");
@@ -82,7 +86,7 @@ class CalculatorController extends GetxController {
             dentroParenteses = 1;
             //print('oi');
           }
-      
+
           if (listNumbersScreen.last == '+') {
             return;
           }
@@ -93,11 +97,10 @@ class CalculatorController extends GetxController {
         }
 
         if (dentroParenteses == 0) {
-          if (numberScreen.value=='0') {
+          if (numberScreen.value == '0') {
             listNumbersScreen.add('0');
             listNumbersScreen.add('+');
-          }
-          else{
+          } else {
             listNumbersScreen.add('+');
           }
           //print('ola');
@@ -113,40 +116,44 @@ class CalculatorController extends GetxController {
 
         break;
       case 4:
-      //
+        //
         if (listNumbersScreen.isNotEmpty) {
           if (listNumbersScreen.last == junta) {
             listNumbersAndOpDentroParenteses.add('1');
             //print(listNumbersAndOpDentroParenteses);
 
-            final juntaListNumbersAndOpDentroParenteses = listNumbersAndOpDentroParenteses.join("");
+            final juntaListNumbersAndOpDentroParenteses =
+                listNumbersAndOpDentroParenteses.join("");
             //print(juntaListNumbersAndOpDentroParenteses);
 
-            metadeListParenteses==0 ?null : listParenteses.removeAt(metadeListParenteses);
+            metadeListParenteses == 0
+                ? null
+                : listParenteses.removeAt(metadeListParenteses);
             metadeListParenteses = (listParenteses.length / 2).round();
             //print(metadeListParenteses);
 
-            listParenteses.insert(metadeListParenteses, juntaListNumbersAndOpDentroParenteses);
+            listParenteses.insert(
+                metadeListParenteses, juntaListNumbersAndOpDentroParenteses);
             //print(listParenteses);
             //rint(listParenteses.length);
 
             junta = listParenteses.join("");
             listNumbersScreen.removeLast();
             listNumbersScreen.add(junta);
-            dentroParenteses=1;
+            dentroParenteses = 1;
             //print('oi');
           }
         }
 
-        if(listNumbersScreen.isEmpty){
-          dentroParenteses=0;
+        if (listNumbersScreen.isEmpty) {
+          dentroParenteses = 0;
         }
 
         if (dentroParenteses == 0) {
           listNumbersScreen.add('1');
           //print('ola');
         }
-        
+
         lastNumberScreen.value = '0';
 
         if (resultCalculator != 0 && controleDeLimpar == 0) {
@@ -282,29 +289,36 @@ class CalculatorController extends GetxController {
       case 16:
         //
 
-        if(numberScreen.value=='0'){
+        if (numberScreen.value == '0') {
           listParenteses.clear();
         }
 
         if (listNumbersScreen.isNotEmpty) {
           //print('1 if');
-          if (listNumbersScreen.last == junta && numberScreen.value != '()' && junta != '') {
+          if (listNumbersScreen.last == junta &&
+              numberScreen.value != '()' &&
+              junta != '') {
             if (listNumbersAndOpDentroParenteses.isNotEmpty) {
               listNumbersAndOpDentroParenteses.removeLast();
-              final juntaListNumbersAndOpDentroParenteses = listNumbersAndOpDentroParenteses.join("");
-              metadeListParenteses == 0 ? null : listParenteses.removeAt(metadeListParenteses);
+              final juntaListNumbersAndOpDentroParenteses =
+                  listNumbersAndOpDentroParenteses.join("");
+              metadeListParenteses == 0
+                  ? null
+                  : listParenteses.removeAt(metadeListParenteses);
               metadeListParenteses = (listParenteses.length / 2).round();
-              listParenteses.insert(metadeListParenteses, juntaListNumbersAndOpDentroParenteses);
+              listParenteses.insert(
+                  metadeListParenteses, juntaListNumbersAndOpDentroParenteses);
               junta = listParenteses.join("");
               listNumbersScreen.removeLast();
               listNumbersScreen.add(junta);
               dentroParenteses = 1;
-              numberScreen.value = listNumbersScreen.isEmpty ? '0' : listNumbersScreen.join("");
+              numberScreen.value =
+                  listNumbersScreen.isEmpty ? '0' : listNumbersScreen.join("");
               return;
             }
             final cort = junta.split('');
             cort.removeAt(0);
-            cort.isEmpty? null: cort.removeLast();
+            cort.isEmpty ? null : cort.removeLast();
             final juntaCort = cort.join('');
             listNumbersScreen.removeLast();
             listNumbersScreen.add(juntaCort);
@@ -355,6 +369,10 @@ class CalculatorController extends GetxController {
       //
       case 19:
         //
+        // print(ola[1]);
+        // print(ola[3]);
+        // print(oola.indexOf('x'));
+
         if (numberScreen.value == '0') {
           return;
         } else if (listNumbersScreen.last == "+" ||
@@ -385,12 +403,57 @@ class CalculatorController extends GetxController {
           }
         }
 
-        //print(numbersCut);
-
         for (int i = 0; i <= numbersCut.length; i++) {
           final eita = operadores.isEmpty ? null : operadores.first;
-          //print(eita);
+          
 
+          if (operadores.contains('x') && eita!='x') {
+            final cortarNumberScreen = numberScreen.split('');
+            final firstOpX = cortarNumberScreen.indexOf('x');
+            final antecessorNumber = cortarNumberScreen[firstOpX - 1];
+            final sucessorNumber = cortarNumberScreen[firstOpX + 1];
+            final int convertidoAntecessor = int.parse(antecessorNumber);
+            final int convertidoSucessor = int.parse(sucessorNumber);
+            final resultAntSuc = convertidoAntecessor * convertidoSucessor;
+            final indexAntecessorNumberCut = numbersCut.indexOf(convertidoAntecessor);
+            numbersCut.insert(indexAntecessorNumberCut, resultAntSuc);
+            final indexAntecessorNumberCutUpdate = numbersCut.indexOf(convertidoAntecessor);
+            numbersCut.removeRange(indexAntecessorNumberCutUpdate, indexAntecessorNumberCutUpdate +2);
+            final indexX = operadores.indexOf('x');
+            operadores.removeAt(indexX);
+          }
+
+          if (operadores.contains('/') && eita != '/') {
+            final testeDiv = numberScreen.split('  ');
+            print(testeDiv);
+            print(numbersCut);
+            print(operadores);
+            
+            
+
+            final cortarNumberScreen = numberScreen.split('');
+            //print(cortarNumberScreen);
+
+            final firstOpX = cortarNumberScreen.indexOf('/');
+            //print(firstOpX);
+            final antecessorNumber = cortarNumberScreen[firstOpX - 1];
+            //print(antecessorNumber);
+            final sucessorNumber = cortarNumberScreen[firstOpX + 1];
+            //print(sucessorNumber);
+            final int convertidoAntecessor = int.parse(antecessorNumber);
+            final int convertidoSucessor = int.parse(sucessorNumber);
+            final resultAntSuc = (convertidoAntecessor / convertidoSucessor).floor();
+            //print(resultAntSuc);
+            final indexAntecessorNumberCut = numbersCut.indexOf(convertidoAntecessor);
+            numbersCut.insert(indexAntecessorNumberCut, resultAntSuc);
+            final indexAntecessorNumberCutUpdate = numbersCut.indexOf(convertidoAntecessor);
+            numbersCut.removeRange(indexAntecessorNumberCutUpdate,indexAntecessorNumberCutUpdate + 2);
+            final indexX = operadores.indexOf('/');
+            operadores.removeAt(indexX);
+          }
+
+
+          //*
           if (eita == '+') {
             resultCalculator = numbersCut[0] + numbersCut[1];
             numbersCut.removeRange(0, 2);
@@ -412,10 +475,11 @@ class CalculatorController extends GetxController {
           }
 
           if (eita == '/') {
-            resultCalculator = numbersCut[0] * numbersCut[1];
+            resultCalculator = (numbersCut[0] / numbersCut[1]).floor();
             numbersCut.removeRange(0, 2);
             numbersCut.insert(0, resultCalculator);
           }
+          //*//
 
           operadores.isEmpty ? null : operadores.removeAt(0);
         }
@@ -436,6 +500,7 @@ class CalculatorController extends GetxController {
 
     oola = numberScreen.split(RegExp(r'[0123456789]'));
     //print(oola);
+  
 
     //
   }

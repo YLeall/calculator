@@ -1,12 +1,14 @@
 # calculator
 
-A new Flutter project.
+CRIANDO UMA CALCULADORA
 
 ## Getting Started
 
-This project is a starting point for a Flutter application.
+O QUE FALTA FAZER:
 
-A few resources to get you started if this is your first Flutter project:
+- TERMINAR LÓGICA PARENTESES
+- TERMINAR AS PRIORIDADES DOS OPERADORES
+- COMEÇAR A LÓGICA DE OPERAÇÕES COM NÚMEROS REAIS
 
 - [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
 - [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
