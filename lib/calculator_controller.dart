@@ -369,9 +369,6 @@ class CalculatorController extends GetxController {
       //
       case 19:
         //
-        // print(ola[1]);
-        // print(ola[3]);
-        // print(oola.indexOf('x'));
 
         if (numberScreen.value == '0') {
           return;
@@ -384,8 +381,6 @@ class CalculatorController extends GetxController {
         }
 
         controleDeLimpar = 0;
-        //print(listNumbersScreen);
-        //print(ola);
 
         lastNumberScreen.value = numberScreen.value;
         lastNumberScreen.value = '${lastNumberScreen.value} =';
@@ -403,53 +398,92 @@ class CalculatorController extends GetxController {
           }
         }
 
+        String copyNumberScreen = numberScreen.value;
+
         for (int i = 0; i <= numbersCut.length; i++) {
           final eita = operadores.isEmpty ? null : operadores.first;
           
 
           if (operadores.contains('x') && eita!='x') {
-            final cortarNumberScreen = numberScreen.split('');
-            final firstOpX = cortarNumberScreen.indexOf('x');
-            final antecessorNumber = cortarNumberScreen[firstOpX - 1];
-            final sucessorNumber = cortarNumberScreen[firstOpX + 1];
-            final int convertidoAntecessor = int.parse(antecessorNumber);
-            final int convertidoSucessor = int.parse(sucessorNumber);
-            final resultAntSuc = convertidoAntecessor * convertidoSucessor;
-            final indexAntecessorNumberCut = numbersCut.indexOf(convertidoAntecessor);
-            numbersCut.insert(indexAntecessorNumberCut, resultAntSuc);
-            final indexAntecessorNumberCutUpdate = numbersCut.indexOf(convertidoAntecessor);
-            numbersCut.removeRange(indexAntecessorNumberCutUpdate, indexAntecessorNumberCutUpdate +2);
+            String pegarNumDoFor = '';
+            List<int> listNumberMult = [];
+            int resultNumbersMult = 0;
+            int indexNumberDivDiferent=0;
+
+            final testeDiv3 = copyNumberScreen.split(RegExp(r'[+-/]'));
+           
+            for (String ii in testeDiv3) {
+              if (!ii.isNum) {
+                pegarNumDoFor = ii;
+                break;
+              }
+              indexNumberDivDiferent+=1;
+            }
+
+            final testeDiv2 = pegarNumDoFor.split('x');
+
+            for (String convertString in testeDiv2) {
+              final int convertidoNumberDiv = int.parse(convertString);
+              listNumberMult.add(convertidoNumberDiv);
+            }
+
+            for (int i = 1; i != listNumberMult.length; i++) {
+              resultNumbersMult = listNumberMult[0] * listNumberMult[1];
+            }
+  
+            final vvd = copyNumberScreen.replaceAll(RegExp('$pegarNumDoFor'), resultNumbersMult.toString());
+        
+            //final indexAntecessorNumberCut = numbersCut.indexOf(listNumberDiv[0]);
+            //numbersCut.insert(indexAntecessorNumberCut, resultNumbersDiv);
+            //final indexAntecessorNumberCutUpdate = numbersCut.indexOf(listNumberDiv[0]);
+            //numbersCut.removeRange(indexAntecessorNumberCutUpdate,indexAntecessorNumberCutUpdate + 2);
+            numbersCut.insert(indexNumberDivDiferent, resultNumbersMult);
+            numbersCut.removeRange(indexNumberDivDiferent+1, indexNumberDivDiferent + 3);
             final indexX = operadores.indexOf('x');
             operadores.removeAt(indexX);
+            copyNumberScreen = vvd;
+            //
           }
 
           if (operadores.contains('/') && eita != '/') {
-            final testeDiv = numberScreen.split('  ');
-            print(testeDiv);
-            print(numbersCut);
-            print(operadores);
-            
-            
+            String pegarNumDoFor='';
+            List<int> listNumberDiv=[];
+            int resultNumbersDiv=0;
+            int indexNumberDivDiferent = 0;
 
-            final cortarNumberScreen = numberScreen.split('');
-            //print(cortarNumberScreen);
+            final testeDiv3 = copyNumberScreen.split(RegExp(r'[x+-]'));
+            
+            for (String ii in testeDiv3) {
+              if (!ii.isNum) {
+                pegarNumDoFor=ii;
+                break;
+              }
+              indexNumberDivDiferent += 1;
+            }
 
-            final firstOpX = cortarNumberScreen.indexOf('/');
-            //print(firstOpX);
-            final antecessorNumber = cortarNumberScreen[firstOpX - 1];
-            //print(antecessorNumber);
-            final sucessorNumber = cortarNumberScreen[firstOpX + 1];
-            //print(sucessorNumber);
-            final int convertidoAntecessor = int.parse(antecessorNumber);
-            final int convertidoSucessor = int.parse(sucessorNumber);
-            final resultAntSuc = (convertidoAntecessor / convertidoSucessor).floor();
-            //print(resultAntSuc);
-            final indexAntecessorNumberCut = numbersCut.indexOf(convertidoAntecessor);
-            numbersCut.insert(indexAntecessorNumberCut, resultAntSuc);
-            final indexAntecessorNumberCutUpdate = numbersCut.indexOf(convertidoAntecessor);
-            numbersCut.removeRange(indexAntecessorNumberCutUpdate,indexAntecessorNumberCutUpdate + 2);
+            final testeDiv2 = pegarNumDoFor.split('/');
+
+            for (String convertString in testeDiv2) {
+              final int convertidoNumberDiv = int.parse(convertString);
+              listNumberDiv.add(convertidoNumberDiv);
+            }
+
+            for (int i = 1; i != listNumberDiv.length; i++) {
+              resultNumbersDiv = (listNumberDiv[0] / listNumberDiv[1]).floor();
+            }
+
+            final vvd = copyNumberScreen.replaceAll(RegExp('$pegarNumDoFor'), resultNumbersDiv.toString());
+
+            //final indexAntecessorNumberCut = numbersCut.indexOf(listNumberDiv[0]);
+            // numbersCut.insert(indexAntecessorNumberCut, resultNumbersDiv);
+            // final indexAntecessorNumberCutUpdate = numbersCut.indexOf(listNumberDiv[0]);
+            // numbersCut.removeRange(indexAntecessorNumberCutUpdate,indexAntecessorNumberCutUpdate + 2);
+            numbersCut.insert(indexNumberDivDiferent, resultNumbersDiv);
+            numbersCut.removeRange(indexNumberDivDiferent + 1, indexNumberDivDiferent + 3);
             final indexX = operadores.indexOf('/');
             operadores.removeAt(indexX);
+            copyNumberScreen = vvd;
+
           }
 
 
