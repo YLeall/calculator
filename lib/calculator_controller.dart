@@ -1,3 +1,4 @@
+import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 
 class CalculatorController extends GetxController {
@@ -17,12 +18,59 @@ class CalculatorController extends GetxController {
   String junta = '';
   int dentroParenteses = 0;
   int metadeListParenteses = 0;
+  double fontSize = 64;
+  
+
+  ScrollController scrollController = ScrollController();
+  
+
+  void scrollToBottom() {
+    //double initialPosition = scrollController.offset;
+    //print(initialPosition);
+
+    scrollController.animateTo(
+      scrollController.position.maxScrollExtent + 28,
+      duration: const Duration(milliseconds: 300),
+      curve: Curves.ease,
+    );
+
+    if (numberScreen.value=='0') {
+      scrollController.jumpTo(0);
+    }
+
+  }
+
+  void setFontSize({required int sizeListNumberScreen,}){
+    //Na minha calculadora ele muda 6 vezes
+
+    switch (sizeListNumberScreen) {
+      case 9:
+        fontSize = 60;
+        break;
+      case 10:
+        fontSize = 56;
+        break;
+      case 11:
+        fontSize = 54;
+        break;
+      case 12:
+        fontSize = 50;
+        break;
+      case 13:
+        fontSize = 48;
+        break;
+      default:
+    }
+  
+
+  }
+
 
   void calculator({
     required int number,
   }) {
     // Mostrando na tela
-
+   
     switch (number) {
       case 0:
         listNumbersScreen.clear();
@@ -30,6 +78,7 @@ class CalculatorController extends GetxController {
         listParenteses.clear();
         listNumbersAndOpDentroParenteses.clear();
         metadeListParenteses = 0;
+        fontSize=64;
 
         //lastNumberScreen.value = resultCalculator.toString();
         lastNumberScreen.value = '0';
@@ -39,13 +88,11 @@ class CalculatorController extends GetxController {
         if (listNumbersScreen.isNotEmpty) {
           if (listNumbersScreen.last == junta) {
             listNumbersScreen.removeLast();
-            //print('removi');
           }
         }
         listParenteses.insert(0, '(');
 
-        listParenteses.insert(
-            listParenteses.length == 1 ? 1 : listParenteses.length - 1, ')');
+        listParenteses.insert(listParenteses.length == 1 ? 1 : listParenteses.length - 1, ')');
         junta = listParenteses.join("");
 
         listNumbersScreen.add(junta);
@@ -67,24 +114,15 @@ class CalculatorController extends GetxController {
               return;
             }
             listNumbersAndOpDentroParenteses.add('+');
-            //print(listNumbersAndOpDentroParenteses);
-            final juntaListNumbersAndOpDentroParenteses =
-                listNumbersAndOpDentroParenteses.join("");
-            //print(juntaListNumbersAndOpDentroParenteses);
-            metadeListParenteses == 0
-                ? null
-                : listParenteses.removeAt(metadeListParenteses);
+            final juntaListNumbersAndOpDentroParenteses = listNumbersAndOpDentroParenteses.join("");
+            metadeListParenteses == 0 ? null : listParenteses.removeAt(metadeListParenteses);
             metadeListParenteses = (listParenteses.length / 2).round();
-            //print(metadeListParenteses);
-            listParenteses.insert(
-                metadeListParenteses, juntaListNumbersAndOpDentroParenteses);
-            //print(listParenteses);
-            //print(listParenteses.length);
+            listParenteses.insert(metadeListParenteses, juntaListNumbersAndOpDentroParenteses);
             junta = listParenteses.join("");
             listNumbersScreen.removeLast();
             listNumbersScreen.add(junta);
             dentroParenteses = 1;
-            //print('oi');
+            
           }
 
           if (listNumbersScreen.last == '+') {
@@ -113,6 +151,7 @@ class CalculatorController extends GetxController {
           numbersCut.clear();
           controleDeLimpar = 1;
         }
+
 
         break;
       case 4:
@@ -291,6 +330,7 @@ class CalculatorController extends GetxController {
 
         if (numberScreen.value == '0') {
           listParenteses.clear();
+          fontSize=64;
         }
 
         if (listNumbersScreen.isNotEmpty) {
@@ -300,20 +340,15 @@ class CalculatorController extends GetxController {
               junta != '') {
             if (listNumbersAndOpDentroParenteses.isNotEmpty) {
               listNumbersAndOpDentroParenteses.removeLast();
-              final juntaListNumbersAndOpDentroParenteses =
-                  listNumbersAndOpDentroParenteses.join("");
-              metadeListParenteses == 0
-                  ? null
-                  : listParenteses.removeAt(metadeListParenteses);
+              final juntaListNumbersAndOpDentroParenteses = listNumbersAndOpDentroParenteses.join("");
+              metadeListParenteses == 0 ? null : listParenteses.removeAt(metadeListParenteses);
               metadeListParenteses = (listParenteses.length / 2).round();
-              listParenteses.insert(
-                  metadeListParenteses, juntaListNumbersAndOpDentroParenteses);
+              listParenteses.insert(metadeListParenteses, juntaListNumbersAndOpDentroParenteses);
               junta = listParenteses.join("");
               listNumbersScreen.removeLast();
               listNumbersScreen.add(junta);
               dentroParenteses = 1;
-              numberScreen.value =
-                  listNumbersScreen.isEmpty ? '0' : listNumbersScreen.join("");
+              numberScreen.value = listNumbersScreen.isEmpty ? '0' : listNumbersScreen.join("");
               return;
             }
             final cort = junta.split('');
@@ -402,7 +437,6 @@ class CalculatorController extends GetxController {
 
         for (int i = 0; i <= numbersCut.length; i++) {
           final eita = operadores.isEmpty ? null : operadores.first;
-          
 
           if (operadores.contains('x') && eita!='x') {
             String pegarNumDoFor = '';
@@ -433,7 +467,6 @@ class CalculatorController extends GetxController {
   
             final vvd = copyNumberScreen.replaceAll(RegExp('$pegarNumDoFor'), resultNumbersMult.toString());
         
-            
             numbersCut.insert(indexNumberDivDiferent, resultNumbersMult);
             numbersCut.removeRange(indexNumberDivDiferent+1, indexNumberDivDiferent + 3);
             final indexX = operadores.indexOf('x');
@@ -528,7 +561,10 @@ class CalculatorController extends GetxController {
 
     oola = numberScreen.split(RegExp(r'[0123456789]'));
     //print(oola);
-  
+
+    
+    setFontSize(sizeListNumberScreen: listNumbersScreen.length);
+    scrollToBottom();
 
     //
   }

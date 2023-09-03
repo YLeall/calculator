@@ -32,6 +32,8 @@ class CalculatorScreen extends StatelessWidget {
   final Color corBase = const Color(0xFF292445);
   //Color corBase2 = const Color(0xFF121212);
   final calculatorController = Get.find<CalculatorController>();
+  //ScrollController scrollController = ScrollController();
+ 
 
   @override
   Widget build(BuildContext context) {
@@ -55,12 +57,15 @@ class CalculatorScreen extends StatelessWidget {
 
               Expanded(
                 child: Obx(
-                  () => Text(
-                    calculatorController.numberScreen.value.toString(),
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 64,
-                      
+                  () => SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    controller: calculatorController.scrollController,
+                    child: Text(
+                      calculatorController.numberScreen.value.toString(),
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: calculatorController.fontSize, 
+                      ),
                     ),
                   ),
                 ),
