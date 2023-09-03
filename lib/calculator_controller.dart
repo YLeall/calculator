@@ -433,10 +433,7 @@ class CalculatorController extends GetxController {
   
             final vvd = copyNumberScreen.replaceAll(RegExp('$pegarNumDoFor'), resultNumbersMult.toString());
         
-            //final indexAntecessorNumberCut = numbersCut.indexOf(listNumberDiv[0]);
-            //numbersCut.insert(indexAntecessorNumberCut, resultNumbersDiv);
-            //final indexAntecessorNumberCutUpdate = numbersCut.indexOf(listNumberDiv[0]);
-            //numbersCut.removeRange(indexAntecessorNumberCutUpdate,indexAntecessorNumberCutUpdate + 2);
+            
             numbersCut.insert(indexNumberDivDiferent, resultNumbersMult);
             numbersCut.removeRange(indexNumberDivDiferent+1, indexNumberDivDiferent + 3);
             final indexX = operadores.indexOf('x');
@@ -474,10 +471,7 @@ class CalculatorController extends GetxController {
 
             final vvd = copyNumberScreen.replaceAll(RegExp('$pegarNumDoFor'), resultNumbersDiv.toString());
 
-            //final indexAntecessorNumberCut = numbersCut.indexOf(listNumberDiv[0]);
-            // numbersCut.insert(indexAntecessorNumberCut, resultNumbersDiv);
-            // final indexAntecessorNumberCutUpdate = numbersCut.indexOf(listNumberDiv[0]);
-            // numbersCut.removeRange(indexAntecessorNumberCutUpdate,indexAntecessorNumberCutUpdate + 2);
+        
             numbersCut.insert(indexNumberDivDiferent, resultNumbersDiv);
             numbersCut.removeRange(indexNumberDivDiferent + 1, indexNumberDivDiferent + 3);
             final indexX = operadores.indexOf('/');
