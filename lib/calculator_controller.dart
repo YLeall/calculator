@@ -9,8 +9,8 @@ class CalculatorController extends GetxController {
   List<String> ola = [];
   List<String> oola = [];
   List<String> operadores = [];
-  List<int> numbersCut = [];
-  int resultCalculator = 0;
+  List numbersCut = [];
+  num resultCalculator = 0;
   int controleDeLimpar = 0;
   int controleDeParenteses = 0;
   List<String> listParenteses = [];
@@ -156,6 +156,8 @@ class CalculatorController extends GetxController {
         break;
       case 4:
         //
+
+
         if (listNumbersScreen.isNotEmpty) {
           if (listNumbersScreen.last == junta) {
             listNumbersAndOpDentroParenteses.add('1');
@@ -188,8 +190,20 @@ class CalculatorController extends GetxController {
           dentroParenteses = 0;
         }
 
+        int controlPorcentagem=0;
+
         if (dentroParenteses == 0) {
-          listNumbersScreen.add('1');
+          if (listNumbersScreen.isNotEmpty) {
+            if (listNumbersScreen.last == '%') {
+              listNumbersScreen.add('x');
+              listNumbersScreen.add('1');
+              controlPorcentagem=1;
+            }
+          }
+          if (controlPorcentagem==0) {
+            listNumbersScreen.add('1');
+          }
+          controlPorcentagem=0;
           //print('ola');
         }
 
@@ -419,15 +433,26 @@ class CalculatorController extends GetxController {
 
         lastNumberScreen.value = numberScreen.value;
         lastNumberScreen.value = '${lastNumberScreen.value} =';
+
+
         for (String teste in ola) {
           //print(teste);
-
-          final int convertido = int.parse(teste);
+          final ponto = teste.indexOf('.');
+          if (teste != "") {
+            final convertido = ponto == -1 ? int.parse(teste) : double.parse(teste);
+            //print(convertido);
+            numbersCut.add(convertido);
+          }
           //final int convertido = teste != "" ? int.parse(teste) : 0;
-          //print(convertido);
-          numbersCut.add(convertido);
+          
         }
-        for (String ui in oola) {
+
+        //print(numbersCut);
+        final cortOperadorColado = oola.join();
+        final cortOperadorTeste = cortOperadorColado.split('');
+        //print(cortOperadorTeste);
+
+        for (String ui in cortOperadorTeste) {
           if (ui != '') {
             operadores.add(ui);
           }
@@ -438,7 +463,7 @@ class CalculatorController extends GetxController {
         for (int i = 0; i <= numbersCut.length; i++) {
           final eita = operadores.isEmpty ? null : operadores.first;
 
-          if (operadores.contains('x') && eita!='x') {
+          if (operadores.contains('x') && eita!='x' && eita!='%') {
             String pegarNumDoFor = '';
             List<int> listNumberMult = [];
             int resultNumbersMult = 0;
@@ -465,7 +490,7 @@ class CalculatorController extends GetxController {
               resultNumbersMult = listNumberMult[0] * listNumberMult[1];
             }
   
-            final vvd = copyNumberScreen.replaceAll(RegExp('$pegarNumDoFor'), resultNumbersMult.toString());
+            final vvd = copyNumberScreen.replaceAll(RegExp(pegarNumDoFor), resultNumbersMult.toString());
         
             numbersCut.insert(indexNumberDivDiferent, resultNumbersMult);
             numbersCut.removeRange(indexNumberDivDiferent+1, indexNumberDivDiferent + 3);
@@ -502,9 +527,9 @@ class CalculatorController extends GetxController {
               resultNumbersDiv = (listNumberDiv[0] / listNumberDiv[1]).floor();
             }
 
-            final vvd = copyNumberScreen.replaceAll(RegExp('$pegarNumDoFor'), resultNumbersDiv.toString());
-
-        
+            final vvd = copyNumberScreen.replaceAll(RegExp(pegarNumDoFor), resultNumbersDiv.toString());
+            //final vvd = copyNumberScreen.replaceAll(RegExp('$pegarNumDoFor'), resultNumbersDiv.toString());
+       
             numbersCut.insert(indexNumberDivDiferent, resultNumbersDiv);
             numbersCut.removeRange(indexNumberDivDiferent + 1, indexNumberDivDiferent + 3);
             final indexX = operadores.indexOf('/');
@@ -531,15 +556,37 @@ class CalculatorController extends GetxController {
 
           if (eita == 'x') {
             resultCalculator = numbersCut[0] * numbersCut[1];
+            bool temParteDecimalZero = (resultCalculator - resultCalculator.toInt()) == 0;
+
+            if (temParteDecimalZero) {
+              //print("A parte decimal é zero.");
+              resultCalculator = resultCalculator.toInt();
+              numbersCut.removeRange(0, 2);
+              numbersCut.insert(0, resultCalculator);
+            } else {
+              //print("A parte decimal não é zero.");
+              numbersCut.removeRange(0, 2);
+              numbersCut.insert(0, resultCalculator);
+            }
+            // numbersCut.removeRange(0, 2);
+            // numbersCut.insert(0, resultCalculator);
+          }
+
+          if (eita == '/') {
+            resultCalculator = (numbersCut[0] / numbersCut[1]).floor(); 
             numbersCut.removeRange(0, 2);
             numbersCut.insert(0, resultCalculator);
           }
 
-          if (eita == '/') {
-            resultCalculator = (numbersCut[0] / numbersCut[1]).floor();
-            numbersCut.removeRange(0, 2);
+          if (eita == '%') {
+            //print(numbersCut);
+            resultCalculator = (numbersCut[0] / 100);
+            final indexNumberPorcentagem = numbersCut.indexOf(numbersCut[0]);
+            numbersCut.removeAt(indexNumberPorcentagem);
             numbersCut.insert(0, resultCalculator);
+            //print(numbersCut);
           }
+
           //*//
 
           operadores.isEmpty ? null : operadores.removeAt(0);
@@ -549,19 +596,18 @@ class CalculatorController extends GetxController {
       default:
     }
 
-    numberScreen.value =
-        listNumbersScreen.isEmpty ? '0' : listNumbersScreen.join("");
+    numberScreen.value = listNumbersScreen.isEmpty ? '0' : listNumbersScreen.join("");
 
     if (number == 19) {
       numberScreen.value = resultCalculator.toString();
     }
 
-    ola = numberScreen.split(RegExp(r'[+-/x]'));
+    //ola = numberScreen.split(RegExp(r'[+-/x]'));
+    ola = numberScreen.split(RegExp(r'[%x/+-]'));
     //print(ola);
 
-    oola = numberScreen.split(RegExp(r'[0123456789]'));
+    oola = numberScreen.split(RegExp(r'[0123456789.]'));
     //print(oola);
-
     
     setFontSize(sizeListNumberScreen: listNumbersScreen.length);
     scrollToBottom();

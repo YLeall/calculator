@@ -55,6 +55,8 @@ class CalculatorScreen extends StatelessWidget {
                 ),
               ),
 
+              const SizedBox(height: 120,),
+
               Expanded(
                 child: Obx(
                   () => SingleChildScrollView(
