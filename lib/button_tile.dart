@@ -15,19 +15,35 @@ class ButtonTile extends StatelessWidget {
   final Function(int teste) onPressed;
 
   final calculatorController = Get.find<CalculatorController>();
+  final colorTextButton = const Color(0xFF29A8FF);
+  final colorBackgroundButtonDark = const Color(0xFF303136);
 
   @override
   Widget build(BuildContext context) {
-    return TextButton(
-      onPressed: () {
-        onPressed(index);
-        calculatorController.calculator(number: index);
-      },
-      child: Text(
-        nameButton,
-        style: const TextStyle(
-          fontSize: 32,
-          color: Colors.white,
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Container(
+        decoration: BoxDecoration(
+          color: Theme.of(context).colorScheme.onPrimaryContainer,
+          borderRadius: BorderRadius.circular(16),
+        ),
+        child: TextButton(
+          onPressed: () {
+            onPressed(index);
+            calculatorController.calculator(number: index);
+          },
+          style: ButtonStyle(
+            overlayColor: MaterialStateColor.resolveWith(
+              (states) => Colors.white.withOpacity(0.1),
+            ),
+          ),
+          child: Text(
+            nameButton,
+            style: TextStyle(
+              fontSize: 32,
+              color: colorTextButton,
+            ),
+          ),
         ),
       ),
     );

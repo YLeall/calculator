@@ -1,3 +1,5 @@
+import 'package:calculator/theme.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 
@@ -19,10 +21,20 @@ class CalculatorController extends GetxController {
   int dentroParenteses = 0;
   int metadeListParenteses = 0;
   double fontSize = 64;
-  
 
   ScrollController scrollController = ScrollController();
-  
+
+  RxBool switchValue = true.obs;
+
+  void changeTheme(bool isTheme){
+    switchValue.value = !switchValue.value;
+    if (isTheme==true) {
+      Get.changeThemeMode(ThemeMode.dark);
+    }
+    else{
+      Get.changeThemeMode(ThemeMode.light);
+    }
+  }
 
   void scrollToBottom() {
     //double initialPosition = scrollController.offset;
@@ -537,7 +549,6 @@ class CalculatorController extends GetxController {
             copyNumberScreen = vvd;
 
           }
-
 
           //*
           if (eita == '+') {
