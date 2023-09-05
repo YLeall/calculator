@@ -1,13 +1,11 @@
 import 'package:calculator/calculator_screen.dart';
+import 'package:calculator/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
 import 'calculator_controller.dart';
 
-void main() {
-
+void main() async{
   Get.put(CalculatorController());
-
   runApp(const MyApp());
 }
 
@@ -18,13 +16,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Desenvolvendo calculadora',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: Colors.white,
-        ),
-        useMaterial3: true,
-      ),
+      title: 'Calculadora',
+      theme: lightTheme,
+      darkTheme: darkTheme,
       home: CalculatorScreen(),
     );
   }
