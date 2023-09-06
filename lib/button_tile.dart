@@ -34,7 +34,8 @@ class ButtonTile extends StatelessWidget {
           },
           style: ButtonStyle(
             overlayColor: MaterialStateColor.resolveWith(
-              (states) => Colors.white.withOpacity(0.1),
+              (states) =>
+                  const Color.fromARGB(110, 255, 255, 255).withOpacity(0.1),
             ),
           ),
           child: Text(

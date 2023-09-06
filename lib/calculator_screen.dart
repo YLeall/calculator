@@ -29,7 +29,7 @@ class CalculatorScreen extends StatelessWidget {
     '.',
     '=',
   ];
-  
+
   final calculatorController = Get.find<CalculatorController>();
 
   @override
@@ -52,14 +52,61 @@ class CalculatorScreen extends StatelessWidget {
           trackOutlineColor: trackOutlineColor,
         ),
         centerTitle: true,
-        actions: [
-          IconButton(
-            icon: Icon(
-              Icons.history_outlined,
-              color: Theme.of(context).colorScheme.onTertiary,
-              size: 35,
+        leading: Builder(
+          builder: (context) {
+            return IconButton(
+              icon: Icon(
+                Icons.history_outlined,
+                color: Theme.of(context).colorScheme.onTertiary,
+                size: 35,
+              ),
+              onPressed: () {
+                Scaffold.of(context).openDrawer();
+              },
+            );
+          },
+        ),
+      ),
+
+      drawer: NavigationDrawer(
+        children: [
+          const Padding(
+            padding: EdgeInsets.symmetric(vertical: 25),
+            child: Align(
+              alignment: Alignment.center,
+              child: Text(
+                'H I S T Ó R I C O',
+                style: TextStyle(
+                  fontSize: 20,
+                ),
+              ),
             ),
-            onPressed: () {},
+          ),
+          ListTile(
+            leading: const Text(
+              '1',
+              style: TextStyle(
+                fontSize: 28,
+              ),
+            ),
+            title: const Text(
+              'Item 1',
+              style: TextStyle(
+                fontSize: 20,
+              ),
+            ),
+            subtitle: const Text(
+              'Teste 2',
+              style: TextStyle(
+                fontSize: 14,
+              ),
+            ),
+            trailing: IconButton(
+              onPressed: () {},
+              icon: const Icon(
+                Icons.arrow_forward,
+              ),
+            ),
           ),
         ],
       ),
@@ -75,7 +122,8 @@ class CalculatorScreen extends StatelessWidget {
                 () => Text(
                   calculatorController.lastNumberScreen.value.toString(),
                   style: TextStyle(
-                    color:  Theme.of(context).colorScheme.onTertiary.withAlpha(100),
+                    color:
+                        Theme.of(context).colorScheme.onTertiary.withAlpha(100),
                     fontSize: 24,
                   ),
                 ),
@@ -129,24 +177,3 @@ class CalculatorScreen extends StatelessWidget {
     );
   }
 }
-
-/*
-FlutterSwitch(
-            value: calculatorController.switchValue.value,
-            width: 122.0,
-            height: 40,
-            toggleSize: 30.0,
-            padding: 5,
-            onToggle: (value) {
-              calculatorController.changeTheme(value);
-            },
-            activeIcon: const Icon(
-              Icons.dark_mode_outlined,
-              color: Colors.black,
-            ),
-            inactiveIcon: const Icon(
-              Icons.wb_sunny_rounded,
-              color: Colors.black,
-            ),
-          ),
-*/
