@@ -1,6 +1,7 @@
 import 'package:calculator/button_tile.dart';
 import 'package:calculator/calculator_controller.dart';
 import 'package:calculator/constants.dart';
+import 'package:calculator/historic_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -39,6 +40,9 @@ class CalculatorScreen extends StatelessWidget {
       //
       appBar: AppBar(
         backgroundColor: Colors.transparent,
+        surfaceTintColor: Colors.transparent,
+        shadowColor: Colors.transparent,
+        foregroundColor: Colors.transparent,
         elevation: 0,
         title: Switch(
           thumbIcon: thumbIcon,
@@ -68,47 +72,83 @@ class CalculatorScreen extends StatelessWidget {
         ),
       ),
 
-      drawer: NavigationDrawer(
-        children: [
-          const Padding(
-            padding: EdgeInsets.symmetric(vertical: 25),
-            child: Align(
-              alignment: Alignment.center,
-              child: Text(
-                'H I S T Ó R I C O',
-                style: TextStyle(
-                  fontSize: 20,
+      drawer: Obx(
+        () => NavigationDrawer(
+          backgroundColor: Theme.of(context).colorScheme.background,
+          elevation: 0,
+          children: [
+            //
+
+            // const Padding(
+            //   padding: EdgeInsets.symmetric(vertical: 25),
+            //   child: Align(
+            //     alignment: Alignment.center,
+            //     child: Text(
+            //       'H I S T Ó R I C O',
+            //       style: TextStyle(
+            //         fontSize: 20,
+            //       ),
+            //     ),
+            //   ),
+            // ),
+
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 25),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  const Text(
+                    'H I S T Ó R I C O',
+                    style: TextStyle(
+                      fontSize: 20,
+                    ),
+                  ),
+                  IconButton(
+                    onPressed: () {
+                      calculatorController.clearListHistoric();
+                    },
+                    icon: const Icon(
+                      Icons.delete,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+
+            if (calculatorController.listHistoricModel.isEmpty) ...[
+              const SizedBox(
+                height: 230,
+              ),
+              const Padding(
+                padding: EdgeInsets.all(8.0),
+                child: Icon(
+                  Icons.sentiment_dissatisfied_outlined,
+                  size: 50,
                 ),
               ),
-            ),
-          ),
-          ListTile(
-            leading: const Text(
-              '1',
-              style: TextStyle(
-                fontSize: 28,
+              const Align(
+                alignment: Alignment.center,
+                child: Text(
+                  'V A Z I O ',
+                  style: TextStyle(
+                    fontSize: 30,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
               ),
-            ),
-            title: const Text(
-              'Item 1',
-              style: TextStyle(
-                fontSize: 20,
-              ),
-            ),
-            subtitle: const Text(
-              'Teste 2',
-              style: TextStyle(
-                fontSize: 14,
-              ),
-            ),
-            trailing: IconButton(
-              onPressed: () {},
-              icon: const Icon(
-                Icons.arrow_forward,
-              ),
-            ),
-          ),
-        ],
+            ],
+
+            // TESTAR
+            ...calculatorController.listHistoricModel.map((historicTile) {
+              return HistoricTile(
+                operacaoName: historicTile.operacaoName,
+                indexListHistoric: historicTile.id,
+                resultOperacao: historicTile.resultOperacao,
+              );
+            }).toList(),
+            //
+          ],
+        ),
       ),
 
       //

@@ -1,9 +1,11 @@
+import 'package:calculator/number_historic_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class CalculatorController extends GetxController {
   RxString numberScreen = '0'.obs;
   RxString lastNumberScreen = '0'.obs;
+  RxList<NumberHistoricModel> listHistoricModel = <NumberHistoricModel>[].obs;
 
   final listNumbersScreen = [];
   List<String> ola = [];
@@ -19,40 +21,54 @@ class CalculatorController extends GetxController {
   int dentroParenteses = 0;
   int metadeListParenteses = 0;
   double fontSize = 64;
+  int contador = 0;
 
   ScrollController scrollController = ScrollController();
 
   RxBool switchValue = true.obs;
 
-  void changeTheme(bool isTheme){
+  void changeTheme(bool isTheme) {
     switchValue.value = !switchValue.value;
-    if (isTheme==true) {
+    if (isTheme == true) {
       Get.changeThemeMode(ThemeMode.dark);
-    }
-    else{
+    } else {
       Get.changeThemeMode(ThemeMode.light);
     }
+  }
+
+  void clearListHistoric() {
+    listHistoricModel.clear();
+    contador=0;
+  }
+
+  void changeNumberScreenHistoric({required String numberHistoric,}){
+    numberScreen.value = numberHistoric;
+    final quebrando = numberScreen.split('');
+    ola = numberScreen.split(RegExp(r'[%x/+-]'));
+    oola = numberScreen.split(RegExp(r'[0123456789.]'));
+    numbersCut.clear();
+    listNumbersScreen.clear();
+    listNumbersScreen.addAll(quebrando);
+    resultCalculator=0;
   }
 
   void scrollToBottom() {
     //double initialPosition = scrollController.offset;
     //print(initialPosition);
-
     scrollController.animateTo(
       scrollController.position.maxScrollExtent + 28,
       duration: const Duration(milliseconds: 300),
       curve: Curves.ease,
     );
 
-    if (numberScreen.value=='0') {
+    if (numberScreen.value == '0') {
       scrollController.jumpTo(0);
     }
-
   }
 
-  void setFontSize({required int sizeListNumberScreen,}){
-    //Na minha calculadora ele muda 6 vezes
-
+  void setFontSize({
+    required int sizeListNumberScreen,
+  }) {
     switch (sizeListNumberScreen) {
       case 9:
         fontSize = 60;
@@ -71,16 +87,13 @@ class CalculatorController extends GetxController {
         break;
       default:
     }
-  
-
   }
-
 
   void calculator({
     required int number,
   }) {
     // Mostrando na tela
-   
+
     switch (number) {
       case 0:
         listNumbersScreen.clear();
@@ -88,7 +101,7 @@ class CalculatorController extends GetxController {
         listParenteses.clear();
         listNumbersAndOpDentroParenteses.clear();
         metadeListParenteses = 0;
-        fontSize=64;
+        fontSize = 64;
 
         //lastNumberScreen.value = resultCalculator.toString();
         lastNumberScreen.value = '0';
@@ -102,7 +115,8 @@ class CalculatorController extends GetxController {
         }
         listParenteses.insert(0, '(');
 
-        listParenteses.insert(listParenteses.length == 1 ? 1 : listParenteses.length - 1, ')');
+        listParenteses.insert(
+            listParenteses.length == 1 ? 1 : listParenteses.length - 1, ')');
         junta = listParenteses.join("");
 
         listNumbersScreen.add(junta);
@@ -124,15 +138,18 @@ class CalculatorController extends GetxController {
               return;
             }
             listNumbersAndOpDentroParenteses.add('+');
-            final juntaListNumbersAndOpDentroParenteses = listNumbersAndOpDentroParenteses.join("");
-            metadeListParenteses == 0 ? null : listParenteses.removeAt(metadeListParenteses);
+            final juntaListNumbersAndOpDentroParenteses =
+                listNumbersAndOpDentroParenteses.join("");
+            metadeListParenteses == 0
+                ? null
+                : listParenteses.removeAt(metadeListParenteses);
             metadeListParenteses = (listParenteses.length / 2).round();
-            listParenteses.insert(metadeListParenteses, juntaListNumbersAndOpDentroParenteses);
+            listParenteses.insert(
+                metadeListParenteses, juntaListNumbersAndOpDentroParenteses);
             junta = listParenteses.join("");
             listNumbersScreen.removeLast();
             listNumbersScreen.add(junta);
             dentroParenteses = 1;
-            
           }
 
           if (listNumbersScreen.last == '+') {
@@ -162,11 +179,9 @@ class CalculatorController extends GetxController {
           controleDeLimpar = 1;
         }
 
-
         break;
       case 4:
         //
-
 
         if (listNumbersScreen.isNotEmpty) {
           if (listNumbersScreen.last == junta) {
@@ -200,20 +215,20 @@ class CalculatorController extends GetxController {
           dentroParenteses = 0;
         }
 
-        int controlPorcentagem=0;
+        int controlPorcentagem = 0;
 
         if (dentroParenteses == 0) {
           if (listNumbersScreen.isNotEmpty) {
             if (listNumbersScreen.last == '%') {
               listNumbersScreen.add('x');
               listNumbersScreen.add('1');
-              controlPorcentagem=1;
+              controlPorcentagem = 1;
             }
           }
-          if (controlPorcentagem==0) {
+          if (controlPorcentagem == 0) {
             listNumbersScreen.add('1');
           }
-          controlPorcentagem=0;
+          controlPorcentagem = 0;
           //print('ola');
         }
 
@@ -354,7 +369,7 @@ class CalculatorController extends GetxController {
 
         if (numberScreen.value == '0') {
           listParenteses.clear();
-          fontSize=64;
+          fontSize = 64;
         }
 
         if (listNumbersScreen.isNotEmpty) {
@@ -364,15 +379,20 @@ class CalculatorController extends GetxController {
               junta != '') {
             if (listNumbersAndOpDentroParenteses.isNotEmpty) {
               listNumbersAndOpDentroParenteses.removeLast();
-              final juntaListNumbersAndOpDentroParenteses = listNumbersAndOpDentroParenteses.join("");
-              metadeListParenteses == 0 ? null : listParenteses.removeAt(metadeListParenteses);
+              final juntaListNumbersAndOpDentroParenteses =
+                  listNumbersAndOpDentroParenteses.join("");
+              metadeListParenteses == 0
+                  ? null
+                  : listParenteses.removeAt(metadeListParenteses);
               metadeListParenteses = (listParenteses.length / 2).round();
-              listParenteses.insert(metadeListParenteses, juntaListNumbersAndOpDentroParenteses);
+              listParenteses.insert(
+                  metadeListParenteses, juntaListNumbersAndOpDentroParenteses);
               junta = listParenteses.join("");
               listNumbersScreen.removeLast();
               listNumbersScreen.add(junta);
               dentroParenteses = 1;
-              numberScreen.value = listNumbersScreen.isEmpty ? '0' : listNumbersScreen.join("");
+              numberScreen.value =
+                  listNumbersScreen.isEmpty ? '0' : listNumbersScreen.join("");
               return;
             }
             final cort = junta.split('');
@@ -444,17 +464,16 @@ class CalculatorController extends GetxController {
         lastNumberScreen.value = numberScreen.value;
         lastNumberScreen.value = '${lastNumberScreen.value} =';
 
-
         for (String teste in ola) {
           //print(teste);
           final ponto = teste.indexOf('.');
           if (teste != "") {
-            final convertido = ponto == -1 ? int.parse(teste) : double.parse(teste);
+            final convertido =
+                ponto == -1 ? int.parse(teste) : double.parse(teste);
             //print(convertido);
             numbersCut.add(convertido);
           }
           //final int convertido = teste != "" ? int.parse(teste) : 0;
-          
         }
 
         //print(numbersCut);
@@ -473,20 +492,20 @@ class CalculatorController extends GetxController {
         for (int i = 0; i <= numbersCut.length; i++) {
           final eita = operadores.isEmpty ? null : operadores.first;
 
-          if (operadores.contains('x') && eita!='x' && eita!='%') {
+          if (operadores.contains('x') && eita != 'x' && eita != '%') {
             String pegarNumDoFor = '';
             List<int> listNumberMult = [];
             int resultNumbersMult = 0;
-            int indexNumberDivDiferent=0;
+            int indexNumberDivDiferent = 0;
 
             final testeDiv3 = copyNumberScreen.split(RegExp(r'[+-/]'));
-           
+
             for (String ii in testeDiv3) {
               if (!ii.isNum) {
                 pegarNumDoFor = ii;
                 break;
               }
-              indexNumberDivDiferent+=1;
+              indexNumberDivDiferent += 1;
             }
 
             final testeDiv2 = pegarNumDoFor.split('x');
@@ -499,11 +518,11 @@ class CalculatorController extends GetxController {
             for (int i = 1; i != listNumberMult.length; i++) {
               resultNumbersMult = listNumberMult[0] * listNumberMult[1];
             }
-  
+
             final vvd = copyNumberScreen.replaceAll(RegExp(pegarNumDoFor), resultNumbersMult.toString());
-        
+
             numbersCut.insert(indexNumberDivDiferent, resultNumbersMult);
-            numbersCut.removeRange(indexNumberDivDiferent+1, indexNumberDivDiferent + 3);
+            numbersCut.removeRange(indexNumberDivDiferent + 1, indexNumberDivDiferent + 3);
             final indexX = operadores.indexOf('x');
             operadores.removeAt(indexX);
             copyNumberScreen = vvd;
@@ -511,16 +530,16 @@ class CalculatorController extends GetxController {
           }
 
           if (operadores.contains('/') && eita != '/') {
-            String pegarNumDoFor='';
-            List<int> listNumberDiv=[];
-            int resultNumbersDiv=0;
+            String pegarNumDoFor = '';
+            List<int> listNumberDiv = [];
+            int resultNumbersDiv = 0;
             int indexNumberDivDiferent = 0;
 
             final testeDiv3 = copyNumberScreen.split(RegExp(r'[x+-]'));
-            
+
             for (String ii in testeDiv3) {
               if (!ii.isNum) {
-                pegarNumDoFor=ii;
+                pegarNumDoFor = ii;
                 break;
               }
               indexNumberDivDiferent += 1;
@@ -539,13 +558,12 @@ class CalculatorController extends GetxController {
 
             final vvd = copyNumberScreen.replaceAll(RegExp(pegarNumDoFor), resultNumbersDiv.toString());
             //final vvd = copyNumberScreen.replaceAll(RegExp('$pegarNumDoFor'), resultNumbersDiv.toString());
-       
+
             numbersCut.insert(indexNumberDivDiferent, resultNumbersDiv);
             numbersCut.removeRange(indexNumberDivDiferent + 1, indexNumberDivDiferent + 3);
             final indexX = operadores.indexOf('/');
             operadores.removeAt(indexX);
             copyNumberScreen = vvd;
-
           }
 
           //*
@@ -582,7 +600,7 @@ class CalculatorController extends GetxController {
           }
 
           if (eita == '/') {
-            resultCalculator = (numbersCut[0] / numbersCut[1]).floor(); 
+            resultCalculator = (numbersCut[0] / numbersCut[1]).floor();
             numbersCut.removeRange(0, 2);
             numbersCut.insert(0, resultCalculator);
           }
@@ -605,10 +623,22 @@ class CalculatorController extends GetxController {
       default:
     }
 
-    numberScreen.value = listNumbersScreen.isEmpty ? '0' : listNumbersScreen.join("");
+    numberScreen.value =
+        listNumbersScreen.isEmpty ? '0' : listNumbersScreen.join("");
 
     if (number == 19) {
+      contador += 1;
+
+      listHistoricModel.add(
+        NumberHistoricModel(
+          id: contador,
+          operacaoName: numberScreen.value,
+          resultOperacao: resultCalculator.toString(),
+        ),
+      );
+
       numberScreen.value = resultCalculator.toString();
+      //
     }
 
     //ola = numberScreen.split(RegExp(r'[+-/x]'));
@@ -617,7 +647,7 @@ class CalculatorController extends GetxController {
 
     oola = numberScreen.split(RegExp(r'[0123456789.]'));
     //print(oola);
-    
+
     setFontSize(sizeListNumberScreen: listNumbersScreen.length);
     scrollToBottom();
 
