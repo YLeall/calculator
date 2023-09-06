@@ -13,9 +13,9 @@ class ButtonTile extends StatelessWidget {
   final String nameButton;
   final int index;
   final Function(int teste) onPressed;
-
   final calculatorController = Get.find<CalculatorController>();
   final colorTextButton = const Color(0xFF29A8FF);
+  final colorBackgroundButtonEqual = const Color(0xFF1991FF);
   final colorBackgroundButtonDark = const Color(0xFF303136);
 
   @override
@@ -24,7 +24,7 @@ class ButtonTile extends StatelessWidget {
       padding: const EdgeInsets.all(8.0),
       child: Container(
         decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.onPrimaryContainer,
+          color: index == 19 ? colorBackgroundButtonEqual : Theme.of(context).colorScheme.onPrimaryContainer,
           borderRadius: BorderRadius.circular(16),
         ),
         child: TextButton(
@@ -42,7 +42,7 @@ class ButtonTile extends StatelessWidget {
             nameButton,
             style: TextStyle(
               fontSize: 32,
-              color: colorTextButton,
+              color: index == 19 ? Colors.white : colorTextButton,
             ),
           ),
         ),
