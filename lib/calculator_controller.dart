@@ -44,8 +44,8 @@ class CalculatorController extends GetxController {
   void changeNumberScreenHistoric({required String numberHistoric,}){
     numberScreen.value = numberHistoric;
     final quebrando = numberScreen.split('');
-    ola = numberScreen.split(RegExp(r'[%x/+-]'));
-    oola = numberScreen.split(RegExp(r'[0123456789.]'));
+    ola = numberScreen.split(RegExp(r'[()%x/+-]'));
+    oola = numberScreen.split(RegExp(r'[()0123456789.]'));
     numbersCut.clear();
     listNumbersScreen.clear();
     listNumbersScreen.addAll(quebrando);
@@ -96,332 +96,55 @@ class CalculatorController extends GetxController {
 
     switch (number) {
       case 0:
-        listNumbersScreen.clear();
-        numbersCut.clear();
-        listParenteses.clear();
-        listNumbersAndOpDentroParenteses.clear();
-        metadeListParenteses = 0;
-        fontSize = 64;
-
-        //lastNumberScreen.value = resultCalculator.toString();
-        lastNumberScreen.value = '0';
-        controleDeLimpar = 1;
+        clearCalculator();
         break;
       case 1:
-        if (listNumbersScreen.isNotEmpty) {
-          if (listNumbersScreen.last == junta) {
-            listNumbersScreen.removeLast();
-          }
-        }
-        listParenteses.insert(0, '(');
-
-        listParenteses.insert(
-            listParenteses.length == 1 ? 1 : listParenteses.length - 1, ')');
-        junta = listParenteses.join("");
-
-        listNumbersScreen.add(junta);
-        lastNumberScreen.value = '0';
+        setLogicParentheses();
         break;
       case 2:
-        listNumbersScreen.add('%');
-        lastNumberScreen.value = '0';
+        setLogicOperatorButton(operator: '%');
         break;
       case 3:
-        // listNumbersScreen[listNumbersScreen.length - 1] == '+'
-        //     ? null
-        //     : listNumbersScreen.add('+');
-
-        if (listNumbersScreen.isNotEmpty) {
-          if (listNumbersScreen.last == junta) {
-            if (listNumbersAndOpDentroParenteses.isEmpty ||
-                listNumbersAndOpDentroParenteses.last == '+') {
-              return;
-            }
-            listNumbersAndOpDentroParenteses.add('+');
-            final juntaListNumbersAndOpDentroParenteses =
-                listNumbersAndOpDentroParenteses.join("");
-            metadeListParenteses == 0
-                ? null
-                : listParenteses.removeAt(metadeListParenteses);
-            metadeListParenteses = (listParenteses.length / 2).round();
-            listParenteses.insert(
-                metadeListParenteses, juntaListNumbersAndOpDentroParenteses);
-            junta = listParenteses.join("");
-            listNumbersScreen.removeLast();
-            listNumbersScreen.add(junta);
-            dentroParenteses = 1;
-          }
-
-          if (listNumbersScreen.last == '+') {
-            return;
-          }
-        }
-
-        if (listNumbersScreen.isEmpty) {
-          dentroParenteses = 0;
-        }
-
-        if (dentroParenteses == 0) {
-          if (numberScreen.value == '0') {
-            listNumbersScreen.add('0');
-            listNumbersScreen.add('+');
-          } else {
-            listNumbersScreen.add('+');
-          }
-          //print('ola');
-        }
-
-        if (resultCalculator != 0 && controleDeLimpar == 0) {
-          listNumbersScreen.clear();
-          listNumbersScreen.add(resultCalculator);
-          listNumbersScreen.add('+');
-          numbersCut.clear();
-          controleDeLimpar = 1;
-        }
-
+        setLogicOperatorButton(operator: '+');
         break;
       case 4:
-        //
-
-        if (listNumbersScreen.isNotEmpty) {
-          if (listNumbersScreen.last == junta) {
-            listNumbersAndOpDentroParenteses.add('1');
-            //print(listNumbersAndOpDentroParenteses);
-
-            final juntaListNumbersAndOpDentroParenteses =
-                listNumbersAndOpDentroParenteses.join("");
-            //print(juntaListNumbersAndOpDentroParenteses);
-
-            metadeListParenteses == 0
-                ? null
-                : listParenteses.removeAt(metadeListParenteses);
-            metadeListParenteses = (listParenteses.length / 2).round();
-            //print(metadeListParenteses);
-
-            listParenteses.insert(
-                metadeListParenteses, juntaListNumbersAndOpDentroParenteses);
-            //print(listParenteses);
-            //rint(listParenteses.length);
-
-            junta = listParenteses.join("");
-            listNumbersScreen.removeLast();
-            listNumbersScreen.add(junta);
-            dentroParenteses = 1;
-            //print('oi');
-          }
-        }
-
-        if (listNumbersScreen.isEmpty) {
-          dentroParenteses = 0;
-        }
-
-        int controlPorcentagem = 0;
-
-        if (dentroParenteses == 0) {
-          if (listNumbersScreen.isNotEmpty) {
-            if (listNumbersScreen.last == '%') {
-              listNumbersScreen.add('x');
-              listNumbersScreen.add('1');
-              controlPorcentagem = 1;
-            }
-          }
-          if (controlPorcentagem == 0) {
-            listNumbersScreen.add('1');
-          }
-          controlPorcentagem = 0;
-          //print('ola');
-        }
-
-        lastNumberScreen.value = '0';
-
-        if (resultCalculator != 0 && controleDeLimpar == 0) {
-          listNumbersScreen.clear();
-          listNumbersScreen.add(resultCalculator);
-          listNumbersScreen.add('1');
-          numbersCut.clear();
-          controleDeLimpar = 1;
-          //print('caiu aqui');
-        }
-
-        //print(listNumbersScreen);
-
+        setLogicNumberButton(number: '1');
         break;
       case 5:
-        listNumbersScreen.add('2');
-        lastNumberScreen.value = '0';
-        if (resultCalculator != 0 && controleDeLimpar == 0) {
-          listNumbersScreen.clear();
-          listNumbersScreen.add(resultCalculator);
-          listNumbersScreen.add('2');
-          numbersCut.clear();
-          controleDeLimpar = 1;
-        }
+        setLogicNumberButton(number: '2');
         break;
       case 6:
-        listNumbersScreen.add('3');
-        lastNumberScreen.value = '0';
-        if (resultCalculator != 0 && controleDeLimpar == 0) {
-          listNumbersScreen.clear();
-          listNumbersScreen.add(resultCalculator);
-          listNumbersScreen.add('3');
-          numbersCut.clear();
-          controleDeLimpar = 1;
-        }
+        setLogicNumberButton(number: '3');
         break;
       case 7:
-        listNumbersScreen.add('-');
-        if (resultCalculator != 0 && controleDeLimpar == 0) {
-          listNumbersScreen.clear();
-          listNumbersScreen.add(resultCalculator);
-          listNumbersScreen.add('-');
-          numbersCut.clear();
-          controleDeLimpar = 1;
-        }
+        setLogicOperatorButton(operator: '-');
         break;
       case 8:
-        listNumbersScreen.add('4');
-        lastNumberScreen.value = '0';
-        if (resultCalculator != 0 && controleDeLimpar == 0) {
-          listNumbersScreen.clear();
-          listNumbersScreen.add(resultCalculator);
-          listNumbersScreen.add('4');
-          numbersCut.clear();
-          controleDeLimpar = 1;
-        }
+        setLogicNumberButton(number: '4');
         break;
       case 9:
-        listNumbersScreen.add('5');
-        lastNumberScreen.value = '0';
-        if (resultCalculator != 0 && controleDeLimpar == 0) {
-          listNumbersScreen.clear();
-          listNumbersScreen.add(resultCalculator);
-          listNumbersScreen.add('5');
-          numbersCut.clear();
-          controleDeLimpar = 1;
-        }
+        setLogicNumberButton(number: '5');
         break;
       case 10:
-        listNumbersScreen.add('6');
-        lastNumberScreen.value = '0';
-        if (resultCalculator != 0 && controleDeLimpar == 0) {
-          listNumbersScreen.clear();
-          listNumbersScreen.add(resultCalculator);
-          listNumbersScreen.add('6');
-          numbersCut.clear();
-          controleDeLimpar = 1;
-        }
+        setLogicNumberButton(number: '6');
         break;
       case 11:
-        listNumbersScreen.add('x');
-        if (resultCalculator != 0 && controleDeLimpar == 0) {
-          listNumbersScreen.clear();
-          listNumbersScreen.add(resultCalculator);
-          listNumbersScreen.add('x');
-          numbersCut.clear();
-          controleDeLimpar = 1;
-        }
+        setLogicOperatorButton(operator: 'x');
         break;
       case 12:
-        listNumbersScreen.add('7');
-        lastNumberScreen.value = '0';
-        if (resultCalculator != 0 && controleDeLimpar == 0) {
-          listNumbersScreen.clear();
-          listNumbersScreen.add(resultCalculator);
-          listNumbersScreen.add('7');
-          numbersCut.clear();
-          controleDeLimpar = 1;
-        }
+        setLogicNumberButton(number: '7');
         break;
       case 13:
-        listNumbersScreen.add('8');
-        lastNumberScreen.value = '0';
-        if (resultCalculator != 0 && controleDeLimpar == 0) {
-          listNumbersScreen.clear();
-          listNumbersScreen.add(resultCalculator);
-          listNumbersScreen.add('8');
-          numbersCut.clear();
-          controleDeLimpar = 1;
-        }
+        setLogicNumberButton(number: '8');
         break;
       case 14:
-        listNumbersScreen.add('9');
-        lastNumberScreen.value = '0';
-        if (resultCalculator != 0 && controleDeLimpar == 0) {
-          listNumbersScreen.clear();
-          listNumbersScreen.add(resultCalculator);
-          listNumbersScreen.add('9');
-          numbersCut.clear();
-          controleDeLimpar = 1;
-        }
+       setLogicNumberButton(number: '9');
         break;
       case 15:
-        listNumbersScreen.add('/');
-        if (resultCalculator != 0 && controleDeLimpar == 0) {
-          listNumbersScreen.clear();
-          listNumbersScreen.add(resultCalculator);
-          listNumbersScreen.add('/');
-          numbersCut.clear();
-          controleDeLimpar = 1;
-        }
+        setLogicOperatorButton(operator: '/');
         break;
       case 16:
-        //
-
-        if (numberScreen.value == '0') {
-          listParenteses.clear();
-          fontSize = 64;
-        }
-
-        if (listNumbersScreen.isNotEmpty) {
-          //print('1 if');
-          if (listNumbersScreen.last == junta &&
-              numberScreen.value != '()' &&
-              junta != '') {
-            if (listNumbersAndOpDentroParenteses.isNotEmpty) {
-              listNumbersAndOpDentroParenteses.removeLast();
-              final juntaListNumbersAndOpDentroParenteses =
-                  listNumbersAndOpDentroParenteses.join("");
-              metadeListParenteses == 0
-                  ? null
-                  : listParenteses.removeAt(metadeListParenteses);
-              metadeListParenteses = (listParenteses.length / 2).round();
-              listParenteses.insert(
-                  metadeListParenteses, juntaListNumbersAndOpDentroParenteses);
-              junta = listParenteses.join("");
-              listNumbersScreen.removeLast();
-              listNumbersScreen.add(junta);
-              dentroParenteses = 1;
-              numberScreen.value =
-                  listNumbersScreen.isEmpty ? '0' : listNumbersScreen.join("");
-              return;
-            }
-            final cort = junta.split('');
-            cort.removeAt(0);
-            cort.isEmpty ? null : cort.removeLast();
-            final juntaCort = cort.join('');
-            listNumbersScreen.removeLast();
-            listNumbersScreen.add(juntaCort);
-            listParenteses.clear();
-            junta = juntaCort;
-            controleDeParenteses = 1;
-            //print('2 if');
-          }
-        }
-
-        if (resultCalculator != 0 && controleDeLimpar == 0) {
-          listNumbersScreen.clear();
-          numbersCut.clear();
-          controleDeLimpar = 1;
-        }
-
-        if (listNumbersScreen.isNotEmpty && controleDeParenteses == 0 ||
-            junta == '') {
-          listNumbersScreen.isEmpty ? null : listNumbersScreen.removeLast();
-          //print('3 if');
-        }
-
-        controleDeParenteses = 0;
-        //
+        setLogicDeleteNumber();
         break;
       case 17:
         if (numberScreen.value == '0') {
@@ -447,184 +170,13 @@ class CalculatorController extends GetxController {
         break;
       //
       case 19:
-        //
-
-        if (numberScreen.value == '0') {
-          return;
-        } else if (listNumbersScreen.last == "+" ||
-            listNumbersScreen.last == "-" ||
-            listNumbersScreen.last == "x" ||
-            listNumbersScreen.last == "/" ||
-            listNumbersScreen.last == "%") {
-          return;
-        }
-
-        controleDeLimpar = 0;
-
-        lastNumberScreen.value = numberScreen.value;
-        lastNumberScreen.value = '${lastNumberScreen.value} =';
-
-        for (String teste in ola) {
-          //print(teste);
-          final ponto = teste.indexOf('.');
-          if (teste != "") {
-            final convertido =
-                ponto == -1 ? int.parse(teste) : double.parse(teste);
-            //print(convertido);
-            numbersCut.add(convertido);
-          }
-          //final int convertido = teste != "" ? int.parse(teste) : 0;
-        }
-
-        //print(numbersCut);
-        final cortOperadorColado = oola.join();
-        final cortOperadorTeste = cortOperadorColado.split('');
-        //print(cortOperadorTeste);
-
-        for (String ui in cortOperadorTeste) {
-          if (ui != '') {
-            operadores.add(ui);
-          }
-        }
-
-        String copyNumberScreen = numberScreen.value;
-
-        for (int i = 0; i <= numbersCut.length; i++) {
-          final eita = operadores.isEmpty ? null : operadores.first;
-
-          if (operadores.contains('x') && eita != 'x' && eita != '%') {
-            String pegarNumDoFor = '';
-            List<int> listNumberMult = [];
-            int resultNumbersMult = 0;
-            int indexNumberDivDiferent = 0;
-
-            final testeDiv3 = copyNumberScreen.split(RegExp(r'[+-/]'));
-
-            for (String ii in testeDiv3) {
-              if (!ii.isNum) {
-                pegarNumDoFor = ii;
-                break;
-              }
-              indexNumberDivDiferent += 1;
-            }
-
-            final testeDiv2 = pegarNumDoFor.split('x');
-
-            for (String convertString in testeDiv2) {
-              final int convertidoNumberDiv = int.parse(convertString);
-              listNumberMult.add(convertidoNumberDiv);
-            }
-
-            for (int i = 1; i != listNumberMult.length; i++) {
-              resultNumbersMult = listNumberMult[0] * listNumberMult[1];
-            }
-
-            final vvd = copyNumberScreen.replaceAll(RegExp(pegarNumDoFor), resultNumbersMult.toString());
-
-            numbersCut.insert(indexNumberDivDiferent, resultNumbersMult);
-            numbersCut.removeRange(indexNumberDivDiferent + 1, indexNumberDivDiferent + 3);
-            final indexX = operadores.indexOf('x');
-            operadores.removeAt(indexX);
-            copyNumberScreen = vvd;
-            //
-          }
-
-          if (operadores.contains('/') && eita != '/') {
-            String pegarNumDoFor = '';
-            List<int> listNumberDiv = [];
-            int resultNumbersDiv = 0;
-            int indexNumberDivDiferent = 0;
-
-            final testeDiv3 = copyNumberScreen.split(RegExp(r'[x+-]'));
-
-            for (String ii in testeDiv3) {
-              if (!ii.isNum) {
-                pegarNumDoFor = ii;
-                break;
-              }
-              indexNumberDivDiferent += 1;
-            }
-
-            final testeDiv2 = pegarNumDoFor.split('/');
-
-            for (String convertString in testeDiv2) {
-              final int convertidoNumberDiv = int.parse(convertString);
-              listNumberDiv.add(convertidoNumberDiv);
-            }
-
-            for (int i = 1; i != listNumberDiv.length; i++) {
-              resultNumbersDiv = (listNumberDiv[0] / listNumberDiv[1]).floor();
-            }
-
-            final vvd = copyNumberScreen.replaceAll(RegExp(pegarNumDoFor), resultNumbersDiv.toString());
-            //final vvd = copyNumberScreen.replaceAll(RegExp('$pegarNumDoFor'), resultNumbersDiv.toString());
-
-            numbersCut.insert(indexNumberDivDiferent, resultNumbersDiv);
-            numbersCut.removeRange(indexNumberDivDiferent + 1, indexNumberDivDiferent + 3);
-            final indexX = operadores.indexOf('/');
-            operadores.removeAt(indexX);
-            copyNumberScreen = vvd;
-          }
-
-          //*
-          if (eita == '+') {
-            resultCalculator = numbersCut[0] + numbersCut[1];
-            numbersCut.removeRange(0, 2);
-            numbersCut.insert(0, resultCalculator);
-            //print(resultCalculator);
-            //print(numbersCut);
-          }
-
-          if (eita == '-') {
-            resultCalculator = numbersCut[0] - numbersCut[1];
-            numbersCut.removeRange(0, 2);
-            numbersCut.insert(0, resultCalculator);
-          }
-
-          if (eita == 'x') {
-            resultCalculator = numbersCut[0] * numbersCut[1];
-            bool temParteDecimalZero = (resultCalculator - resultCalculator.toInt()) == 0;
-
-            if (temParteDecimalZero) {
-              //print("A parte decimal é zero.");
-              resultCalculator = resultCalculator.toInt();
-              numbersCut.removeRange(0, 2);
-              numbersCut.insert(0, resultCalculator);
-            } else {
-              //print("A parte decimal não é zero.");
-              numbersCut.removeRange(0, 2);
-              numbersCut.insert(0, resultCalculator);
-            }
-            // numbersCut.removeRange(0, 2);
-            // numbersCut.insert(0, resultCalculator);
-          }
-
-          if (eita == '/') {
-            resultCalculator = (numbersCut[0] / numbersCut[1]).floor();
-            numbersCut.removeRange(0, 2);
-            numbersCut.insert(0, resultCalculator);
-          }
-
-          if (eita == '%') {
-            //print(numbersCut);
-            resultCalculator = (numbersCut[0] / 100);
-            final indexNumberPorcentagem = numbersCut.indexOf(numbersCut[0]);
-            numbersCut.removeAt(indexNumberPorcentagem);
-            numbersCut.insert(0, resultCalculator);
-            //print(numbersCut);
-          }
-
-          //*//
-
-          operadores.isEmpty ? null : operadores.removeAt(0);
-        }
+        setLogicResultCalculator();
         break;
 
       default:
     }
 
-    numberScreen.value =
-        listNumbersScreen.isEmpty ? '0' : listNumbersScreen.join("");
+    numberScreen.value = listNumbersScreen.isEmpty ? '0' : listNumbersScreen.join("");
 
     if (number == 19) {
       contador += 1;
@@ -642,10 +194,10 @@ class CalculatorController extends GetxController {
     }
 
     //ola = numberScreen.split(RegExp(r'[+-/x]'));
-    ola = numberScreen.split(RegExp(r'[%x/+-]'));
+    ola = numberScreen.split(RegExp(r'[()%x/+-]'));
     //print(ola);
 
-    oola = numberScreen.split(RegExp(r'[0123456789.]'));
+    oola = numberScreen.split(RegExp(r'[()0123456789.]'));
     //print(oola);
 
     setFontSize(sizeListNumberScreen: listNumbersScreen.length);
@@ -653,4 +205,421 @@ class CalculatorController extends GetxController {
 
     //
   }
+
+
+  void setLogicNumberButton({required String number,}) {
+    //
+
+    if (listNumbersScreen.isNotEmpty) {
+      if (listNumbersScreen.last == junta) {
+        if (listNumbersAndOpDentroParenteses.isNotEmpty) {
+          if (listNumbersAndOpDentroParenteses.last == '%') {
+            listNumbersAndOpDentroParenteses.add('x');
+            listNumbersAndOpDentroParenteses.add(number);
+            final juntaListNumbersAndOpDentroParenteses = listNumbersAndOpDentroParenteses.join("");
+            metadeListParenteses == 0 ? null : listParenteses.removeAt(metadeListParenteses);
+            metadeListParenteses = (listParenteses.length / 2).round();
+            listParenteses.insert(metadeListParenteses, juntaListNumbersAndOpDentroParenteses);
+            junta = listParenteses.join("");
+            listNumbersScreen.removeLast();
+            listNumbersScreen.add(junta);
+            numberScreen.value = listNumbersScreen.join();
+            return;
+          }
+        }
+        listNumbersAndOpDentroParenteses.add(number);
+        final juntaListNumbersAndOpDentroParenteses = listNumbersAndOpDentroParenteses.join(""); 
+        metadeListParenteses == 0 ? null : listParenteses.removeAt(metadeListParenteses);
+        metadeListParenteses = (listParenteses.length / 2).round();
+        listParenteses.insert(metadeListParenteses, juntaListNumbersAndOpDentroParenteses);
+        junta = listParenteses.join("");
+        listNumbersScreen.removeLast();
+        listNumbersScreen.add(junta);
+        dentroParenteses = 1;
+      }
+    }
+
+    if (listNumbersScreen.isEmpty || junta=='') {
+      dentroParenteses = 0;
+    }
+
+    int controlPorcentagem = 0;
+    if (dentroParenteses == 0) {
+      if (listNumbersScreen.isNotEmpty) {
+        if (listNumbersScreen.last == '%') {
+          listNumbersScreen.add('x');
+          listNumbersScreen.add(number);
+          controlPorcentagem = 1;
+        }
+      }
+      if (controlPorcentagem == 0) {
+        listNumbersScreen.add(number);
+      }
+      controlPorcentagem = 0;
+    }
+    lastNumberScreen.value = '0';
+    if (resultCalculator != 0 && controleDeLimpar == 0) {
+      if (resultCalculator.isInfinite) {
+        listNumbersScreen.clear();
+        listNumbersScreen.add(number);
+        numbersCut.clear();
+        controleDeLimpar = 1;
+        numberScreen.value = listNumbersScreen.join();
+        resultCalculator=0;
+        return;
+      }
+      listNumbersScreen.clear();
+      listNumbersScreen.add(resultCalculator);
+      listNumbersScreen.add(number);
+      numbersCut.clear();
+      controleDeLimpar = 1;
+    }
+    //
+  }
+
+  void setLogicOperatorButton({required String operator,}){
+
+    if (resultCalculator.isInfinite) {
+      print('Infinito');
+      return;
+    }
+
+    print('passoi');
+
+    if (listNumbersScreen.isNotEmpty) {
+      if (listNumbersScreen.last == junta) {
+        if (listNumbersAndOpDentroParenteses.isEmpty || listNumbersAndOpDentroParenteses.last == operator) {
+          return;
+        }
+        String catchLastNumberScreenInsideParentheses = listNumbersAndOpDentroParenteses.last;
+        bool isNumLastNumberScreenInsideParentheses = catchLastNumberScreenInsideParentheses.isNum;
+
+        if (listNumbersAndOpDentroParenteses.last != operator && !isNumLastNumberScreenInsideParentheses &&
+            catchLastNumberScreenInsideParentheses != '%') {
+          listNumbersAndOpDentroParenteses.removeLast();
+          listNumbersAndOpDentroParenteses.add(operator);
+          final juntaListNumbersAndOpDentroParenteses = listNumbersAndOpDentroParenteses.join("");
+          metadeListParenteses == 0 ? null : listParenteses.removeAt(metadeListParenteses);
+          metadeListParenteses = (listParenteses.length / 2).round();
+          listParenteses.insert(metadeListParenteses, juntaListNumbersAndOpDentroParenteses);
+          junta = listParenteses.join("");
+          listNumbersScreen.removeLast();
+          listNumbersScreen.add(junta);
+          numberScreen.value = listNumbersScreen.join();
+          return;
+        }
+  
+        listNumbersAndOpDentroParenteses.add(operator);
+        final juntaListNumbersAndOpDentroParenteses = listNumbersAndOpDentroParenteses.join("");
+        metadeListParenteses == 0 ? null : listParenteses.removeAt(metadeListParenteses);
+        metadeListParenteses = (listParenteses.length / 2).round();
+        listParenteses.insert(metadeListParenteses, juntaListNumbersAndOpDentroParenteses);
+        junta = listParenteses.join("");
+        listNumbersScreen.removeLast();
+        listNumbersScreen.add(junta);
+        dentroParenteses = 1;
+      }
+      
+      String catchLastNumberScreen = listNumbersScreen.last;
+      bool isNumLastNumberScreen = catchLastNumberScreen.isNum;
+
+      if (listNumbersScreen.last != operator && !isNumLastNumberScreen && dentroParenteses == 0 && catchLastNumberScreen!='%') {
+        listNumbersScreen.removeLast();
+        listNumbersScreen.add(operator);
+      }
+
+      if (listNumbersScreen.last == operator) {
+        return;
+      }
+    }
+
+    if (listNumbersScreen.isEmpty) {
+      dentroParenteses = 0;
+    }
+
+    if (dentroParenteses == 0) {
+      if (numberScreen.value == '0') {
+        listNumbersScreen.add('0');
+        listNumbersScreen.add(operator);
+      } else {
+        listNumbersScreen.add(operator);
+      }
+    }
+
+    if (resultCalculator != 0 && controleDeLimpar == 0) {
+      listNumbersScreen.clear();
+      listNumbersScreen.add(resultCalculator);
+      listNumbersScreen.add(operator);
+      numbersCut.clear();
+      controleDeLimpar = 1;
+    }
+    //
+  }
+
+  void clearCalculator(){
+    listNumbersScreen.clear();
+    numbersCut.clear();
+    listParenteses.clear();
+    listNumbersAndOpDentroParenteses.clear();
+    metadeListParenteses = 0;
+    fontSize = 64;
+    lastNumberScreen.value = '0';
+    junta='';
+    resultCalculator=0;
+    controleDeLimpar = 1;
+    //dentroParenteses=0;
+  }
+
+  void setLogicParentheses(){
+    if (listNumbersScreen.isNotEmpty) {
+      if (listNumbersScreen.last == junta) {
+        listNumbersScreen.removeLast();
+      }
+    }
+    listParenteses.insert(0, '(');
+    listParenteses.insert(listParenteses.length == 1 ? 1 : listParenteses.length - 1, ')');
+    junta = listParenteses.join("");
+    listNumbersScreen.add(junta);
+    lastNumberScreen.value = '0';
+  }
+
+  void setLogicDeleteNumber(){
+
+    if (resultCalculator.isInfinite) {
+      resultCalculator=0;
+      numberScreen.value = '0';
+    }
+    
+    if (numberScreen.value == '0') {
+      listParenteses.clear();
+      fontSize = 64;
+    }
+
+    if (listNumbersScreen.isNotEmpty) {
+      if (listNumbersScreen.last == junta && numberScreen.value != '()' && junta != '') {
+        if (listNumbersAndOpDentroParenteses.isNotEmpty) {
+          listNumbersAndOpDentroParenteses.removeLast();
+          final juntaListNumbersAndOpDentroParenteses = listNumbersAndOpDentroParenteses.join("");
+          metadeListParenteses == 0 ? null : listParenteses.removeAt(metadeListParenteses);
+          metadeListParenteses = (listParenteses.length / 2).round();
+          listParenteses.insert(metadeListParenteses, juntaListNumbersAndOpDentroParenteses);
+          junta = listParenteses.join("");
+          listNumbersScreen.removeLast();
+          listNumbersScreen.add(junta);
+          dentroParenteses = 1;
+          numberScreen.value = listNumbersScreen.isEmpty ? '0' : listNumbersScreen.join("");
+          return;
+        }
+        final cort = junta.split('');
+        cort.removeAt(0);
+        cort.isEmpty ? null : cort.removeLast();
+        final juntaCort = cort.join('');
+        listNumbersScreen.removeLast();
+        listNumbersScreen.add(juntaCort);
+        listParenteses.clear();
+        junta = juntaCort;
+        controleDeParenteses = 1;
+      }
+    }
+
+    if (resultCalculator != 0 && controleDeLimpar == 0) {
+      listNumbersScreen.clear();
+      numbersCut.clear();
+      controleDeLimpar = 1;
+    }
+
+    if (listNumbersScreen.isNotEmpty && controleDeParenteses == 0 || junta == '') {
+      listNumbersScreen.isEmpty ? null : listNumbersScreen.removeLast();
+    }
+
+    controleDeParenteses = 0;
+    //
+  }
+
+  void setLogicResultCalculator(){
+    //
+    if (numberScreen.value == '0') {
+      return;
+    } 
+
+    if (listNumbersScreen.last == "+" ||
+        listNumbersScreen.last == "-" ||
+        listNumbersScreen.last == "x" ||
+        listNumbersScreen.last == "/" ||
+        listNumbersScreen.last == "%") {
+      return;
+    }
+     
+    if (resultCalculator.isInfinite) {
+      return;
+    }
+
+    controleDeLimpar = 0;
+    junta='';
+
+    lastNumberScreen.value = numberScreen.value;
+    lastNumberScreen.value = '${lastNumberScreen.value} =';
+
+    for (String teste in ola) {
+      final ponto = teste.indexOf('.');
+      if (teste != "") {
+        final convertido = ponto == -1 ? int.parse(teste) : double.parse(teste);
+        numbersCut.add(convertido);
+      }
+    }
+
+    final cortOperadorColado = oola.join();
+    final cortOperadorTeste = cortOperadorColado.split('');
+
+    for (String ui in cortOperadorTeste) {
+      if (ui != '') {
+        operadores.add(ui);
+      }
+    }
+
+    String copyNumberScreen = numberScreen.value;
+
+    for (int i = 0; i <= numbersCut.length; i++) {
+      final eita = operadores.isEmpty ? null : operadores.first;
+
+      if (operadores.contains('x') && eita != 'x' && eita != '%') {
+        String pegarNumDoFor = '';
+        List<int> listNumberMult = [];
+        List<String> listRemoveAspasVazias = [];
+        int resultNumbersMult = 0;
+        int indexNumberDivDiferent = 0;
+
+        final testeDiv3 = copyNumberScreen.split(RegExp(r'[()+-/]'));
+
+        for (String tirandoAspasVazia in testeDiv3) {
+          if (tirandoAspasVazia != '') {
+            listRemoveAspasVazias.add(tirandoAspasVazia);
+          }
+        }
+
+        for (String ii in listRemoveAspasVazias) {
+          if (!ii.isNum && ii != '') {
+            pegarNumDoFor = ii;
+            break;
+          }
+          indexNumberDivDiferent += 1;
+        }
+
+        final testeDiv2 = pegarNumDoFor.split('x');
+
+        for (String convertString in testeDiv2) {
+          final int convertidoNumberDiv = int.parse(convertString);
+          listNumberMult.add(convertidoNumberDiv);
+        }
+
+        for (int i = 1; i != listNumberMult.length; i++) {
+          resultNumbersMult = listNumberMult[0] * listNumberMult[1];
+        }
+
+        final vvd = copyNumberScreen.replaceAll(RegExp(pegarNumDoFor), resultNumbersMult.toString());
+        numbersCut.insert(indexNumberDivDiferent, resultNumbersMult);
+        numbersCut.removeRange(indexNumberDivDiferent + 1, indexNumberDivDiferent + 3);
+        final indexX = operadores.indexOf('x');
+        operadores.removeAt(indexX);
+        copyNumberScreen = vvd;
+        //
+      }
+
+      if (operadores.contains('/') && eita != '/') {
+        String pegarNumDoFor = '';
+        List<int> listNumberDiv = [];
+        int resultNumbersDiv = 0;
+        int indexNumberDivDiferent = 0;
+
+        final testeDiv3 = copyNumberScreen.split(RegExp(r'[x+-]'));
+
+        for (String ii in testeDiv3) {
+          if (!ii.isNum) {
+            pegarNumDoFor = ii;
+            break;
+          }
+          indexNumberDivDiferent += 1;
+        }
+
+        final testeDiv2 = pegarNumDoFor.split('/');
+
+        for (String convertString in testeDiv2) {
+          final int convertidoNumberDiv = int.parse(convertString);
+          listNumberDiv.add(convertidoNumberDiv);
+        }
+
+        for (int i = 1; i != listNumberDiv.length; i++) {
+          resultNumbersDiv = (listNumberDiv[0] / listNumberDiv[1]).floor();
+        }
+
+        final vvd = copyNumberScreen.replaceAll(RegExp(pegarNumDoFor), resultNumbersDiv.toString());
+
+        numbersCut.insert(indexNumberDivDiferent, resultNumbersDiv);
+        numbersCut.removeRange(indexNumberDivDiferent + 1, indexNumberDivDiferent + 3);
+        final indexX = operadores.indexOf('/');
+        operadores.removeAt(indexX);
+        copyNumberScreen = vvd;
+      }
+
+      //*
+      if (eita == '+') {
+        resultCalculator = numbersCut[0] + numbersCut[1];
+        numbersCut.removeRange(0, 2);
+        numbersCut.insert(0, resultCalculator);
+      }
+
+      if (eita == '-') {
+        resultCalculator = numbersCut[0] - numbersCut[1];
+        numbersCut.removeRange(0, 2);
+        numbersCut.insert(0, resultCalculator);
+      }
+
+      if (eita == 'x') {
+        resultCalculator = numbersCut[0] * numbersCut[1];
+        bool temParteDecimalZero = (resultCalculator - resultCalculator.toInt()) == 0;
+
+        if (temParteDecimalZero) {
+          resultCalculator = resultCalculator.toInt();
+          numbersCut.removeRange(0, 2);
+          numbersCut.insert(0, resultCalculator);
+        } else {
+          numbersCut.removeRange(0, 2);
+          numbersCut.insert(0, resultCalculator);
+        }
+      }
+
+      if (eita == '/') {
+        resultCalculator = numbersCut[0] / numbersCut[1];
+
+        if (resultCalculator.isInfinite) {
+          operadores.isEmpty ? null : operadores.removeAt(0);
+          return;
+        }
+        bool temParteDecimalZero = (resultCalculator - resultCalculator.toInt()) == 0;
+
+        if (temParteDecimalZero) {
+          resultCalculator = resultCalculator.toInt();
+          numbersCut.removeRange(0, 2);
+          numbersCut.insert(0, resultCalculator);
+        } else {
+          numbersCut.removeRange(0, 2);
+          numbersCut.insert(0, resultCalculator);
+        }
+      }
+
+      if (eita == '%') {
+        resultCalculator = (numbersCut[0] / 100);
+        final indexNumberPercentage = numbersCut.indexOf(numbersCut[0]);
+        numbersCut.removeAt(indexNumberPercentage);
+        numbersCut.insert(0, resultCalculator);
+      }
+
+      //*//
+
+      operadores.isEmpty ? null : operadores.removeAt(0);
+    }
+    //
+  }
+
+
 }
