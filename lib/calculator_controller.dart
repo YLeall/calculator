@@ -22,6 +22,7 @@ class CalculatorController extends GetxController {
   int metadeListParenteses = 0;
   double fontSize = 64;
   int contador = 0;
+  bool controllerOfBugs=false;
 
   ScrollController scrollController = ScrollController();
 
@@ -147,40 +148,24 @@ class CalculatorController extends GetxController {
         setLogicDeleteNumber();
         break;
       case 17:
-        if (numberScreen.value == '0') {
-          return;
-        }
-        listNumbersScreen.add('0');
-        lastNumberScreen.value = '0';
-        if (resultCalculator != 0 && controleDeLimpar == 0) {
-          listNumbersScreen.clear();
-          listNumbersScreen.add(resultCalculator);
-          listNumbersScreen.add('0');
-          numbersCut.clear();
-          controleDeLimpar = 1;
-        }
+        setLogicZeroNumberButton();
         break;
       case 18:
-        if (numberScreen.value == '0') {
-          listNumbersScreen.add('0');
-        } else if (listNumbersScreen.last == '.') {
-          return;
-        }
-        listNumbersScreen.add('.');
+        setLogicPointButton();
         break;
-      //
       case 19:
         setLogicResultCalculator();
         break;
-
       default:
     }
 
-    numberScreen.value = listNumbersScreen.isEmpty ? '0' : listNumbersScreen.join("");
+    if (resultCalculator.isFinite && controllerOfBugs == false) {
+      numberScreen.value = listNumbersScreen.isEmpty ? '0' : listNumbersScreen.join("");
+    }
 
-    if (number == 19) {
+    if (number == 19 && controllerOfBugs == false) {
+      //
       contador += 1;
-
       listHistoricModel.add(
         NumberHistoricModel(
           id: contador,
@@ -193,13 +178,9 @@ class CalculatorController extends GetxController {
       //
     }
 
-    //ola = numberScreen.split(RegExp(r'[+-/x]'));
     ola = numberScreen.split(RegExp(r'[()%x/+-]'));
-    //print(ola);
-
     oola = numberScreen.split(RegExp(r'[()0123456789.]'));
-    //print(oola);
-
+    controllerOfBugs = false;
     setFontSize(sizeListNumberScreen: listNumbersScreen.length);
     scrollToBottom();
 
@@ -280,11 +261,8 @@ class CalculatorController extends GetxController {
   void setLogicOperatorButton({required String operator,}){
 
     if (resultCalculator.isInfinite) {
-      print('Infinito');
       return;
     }
-
-    print('passoi');
 
     if (listNumbersScreen.isNotEmpty) {
       if (listNumbersScreen.last == junta) {
@@ -388,6 +366,9 @@ class CalculatorController extends GetxController {
     if (resultCalculator.isInfinite) {
       resultCalculator=0;
       numberScreen.value = '0';
+      listNumbersScreen.clear();
+      numbersCut.clear();
+      return;
     }
     
     if (numberScreen.value == '0') {
@@ -438,6 +419,7 @@ class CalculatorController extends GetxController {
 
   void setLogicResultCalculator(){
     //
+   
     if (numberScreen.value == '0') {
       return;
     } 
@@ -447,10 +429,20 @@ class CalculatorController extends GetxController {
         listNumbersScreen.last == "x" ||
         listNumbersScreen.last == "/" ||
         listNumbersScreen.last == "%") {
+      //print('object');
+      controllerOfBugs = true;
       return;
     }
      
     if (resultCalculator.isInfinite) {
+      return;
+    }
+
+    String operatorFunc = listNumbersScreen[listNumbersScreen.length - 2];
+    bool teste = operatorFunc == '+' || operatorFunc == '-' || operatorFunc == 'x' || operatorFunc == '/' || operatorFunc == '%';
+
+    if(listNumbersScreen.last=='.' && teste){
+      controllerOfBugs=true;
       return;
     }
 
@@ -619,6 +611,30 @@ class CalculatorController extends GetxController {
       operadores.isEmpty ? null : operadores.removeAt(0);
     }
     //
+  }
+
+  void setLogicZeroNumberButton(){
+    if (numberScreen.value == '0') {
+      return;
+    }
+    listNumbersScreen.add('0');
+    lastNumberScreen.value = '0';
+    if (resultCalculator != 0 && controleDeLimpar == 0) {
+      listNumbersScreen.clear();
+      listNumbersScreen.add(resultCalculator);
+      listNumbersScreen.add('0');
+      numbersCut.clear();
+      controleDeLimpar = 1;
+    }
+  }
+
+  void setLogicPointButton(){
+    if (numberScreen.value == '0') {
+      listNumbersScreen.add('0');
+    } else if (listNumbersScreen.last == '.') {
+      return;
+    }
+    listNumbersScreen.add('.');
   }
 
 
