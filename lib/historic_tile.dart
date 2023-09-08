@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
 import 'calculator_controller.dart';
 
 class HistoricTile extends StatelessWidget {
@@ -15,7 +14,7 @@ class HistoricTile extends StatelessWidget {
   final String resultOperacao;
   final int indexListHistoric;
   final calculatorController = Get.find<CalculatorController>();
-
+  
   @override
   Widget build(BuildContext context) {
     return ListTile(
